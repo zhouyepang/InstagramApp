@@ -42,10 +42,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void signUp(View view) {
+    // Using AuthUI to implement Firebase Login
+    // https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md
+    public void signIn(View view) {
         startActivityForResult(
                 // Get an instance of AuthUI based on the default app
-                AuthUI.getInstance().createSignInIntentBuilder().build(),
+                AuthUI.getInstance().createSignInIntentBuilder().setTheme(R.style.FirebaseLoginTheme).build(),
                 RC_SIGN_IN);
     }
 
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 User user = new User(fbUser.getUid(), fbUser.getDisplayName(), token);
                 database.child("users").child(user.uid).setValue(user);
 
-               // Toast.makeText(this, "Authenticated as " + fbUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+               Toast.makeText(this, "Authenticated as " + fbUser.getDisplayName(), Toast.LENGTH_SHORT).show();
 
                 // go to feed activity
                 Intent intent = new Intent(this, FeedActivity.class);
