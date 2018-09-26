@@ -35,6 +35,9 @@ public class FeedActivity extends AppCompatActivity {
     public void CAMERA(View view) {
 
     }
+    public void bluetooth(View view) {
+
+    }
 
 
 
