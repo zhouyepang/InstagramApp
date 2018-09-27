@@ -6,13 +6,71 @@
     android:layout_height="match_parent"
     tools:context=".FeedActivity">
 
+    <LinearLayout
+        android:id="@+id/toplayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/UserFeed"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:onClick="UserFeed"
+            app:srcCompat="@android:drawable/star_big_off"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="459dp" />
+
+        <ImageButton
+            android:id="@+id/DISCOVER"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:onClick="DISCOVER"
+            app:srcCompat="@android:drawable/ic_search_category_default"
+            tools:layout_editor_absoluteX="90dp"
+            tools:layout_editor_absoluteY="462dp" />
+
+        <ImageButton
+            android:id="@+id/uploadImage"
+            android:layout_width="82dp"
+            android:layout_height="wrap_content"
+            android:onClick="uploadImage"
+            app:srcCompat="@android:drawable/ic_input_add"
+            tools:layout_editor_absoluteX="162dp"
+            tools:layout_editor_absoluteY="459dp" />
+
+        <ImageButton
+            android:id="@+id/ActivityFeed"
+            android:layout_width="77dp"
+            android:layout_height="wrap_content"
+            android:onClick="ActivityFeed"
+            app:srcCompat="@android:drawable/ic_menu_agenda"
+            tools:layout_editor_absoluteX="234dp"
+            tools:layout_editor_absoluteY="459dp" />
+
+        <ImageButton
+            android:id="@+id/Profile"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:onClick="Profile"
+            app:srcCompat="@android:drawable/ic_menu_myplaces"
+            tools:layout_editor_absoluteX="312dp"
+            tools:layout_editor_absoluteY="459dp" />
+
+    </LinearLayout>
     <ImageButton
         android:id="@+id/CAMERA"
         android:layout_width="43dp"
         android:layout_height="35dp"
-        android:layout_marginBottom="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
         android:onClick="CAMERA"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toStartOf="@+id/recyclerView"
@@ -21,98 +79,33 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
-    <ImageButton
-        android:id="@+id/DISCOVER"
-        android:layout_width="54dp"
-        android:layout_height="49dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginStart="18dp"
-        android:onClick="DISCOVER"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/uploadImage"
-        app:layout_constraintStart_toEndOf="@+id/UserFeed"
-        app:srcCompat="@android:drawable/ic_search_category_default" />
-
-    <ImageButton
-        android:id="@+id/uploadImage"
-        android:layout_width="56dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="15dp"
-        android:onClick="uploadImage"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ActivityFeed"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="369dp"
-        android:layout_height="398dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="8dp"
+        android:layout_height="417dp"
         android:layout_marginStart="7dp"
-        android:layout_marginTop="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/DISCOVER"
+        android:layout_marginLeft="7dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="7dp"
+        app:layout_constraintBottom_toTopOf="@+id/toplayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CAMERA" />
-
-    <ImageButton
-        android:id="@+id/Profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="15dp"
-        android:onClick="Profile"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-        app:srcCompat="@android:drawable/ic_menu_myplaces" />
-
-    <ImageButton
-        android:id="@+id/ActivityFeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="22dp"
-        android:layout_marginRight="22dp"
-        android:layout_marginTop="15dp"
-        android:onClick="ActivityFeed"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/Profile"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-        app:srcCompat="@android:drawable/ic_menu_agenda" />
-
-    <ImageButton
-        android:id="@+id/UserFeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="15dp"
-        android:onClick="UserFeed"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/star_big_off" />
 
     <Switch
         android:id="@+id/time-location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="9dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="6dp"
         android:text="time-location"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/bluetooth"
