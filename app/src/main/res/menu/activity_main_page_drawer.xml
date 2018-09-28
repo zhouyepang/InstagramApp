@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/following"
+            android:icon="@drawable/ic_people_black_24dp"
+            android:title="Following" />
+        <item
+            android:id="@+id/follower"
+            android:icon="@drawable/ic_people_black_24dp"
+            android:title="Follower" />
+        <item
+            android:id="@+id/bluetooth"
+            android:icon="@drawable/ic_bluetooth_black_24dp"
+            android:title="BlueTooth" />
+        <item
+            android:id="@+id/photoEditor"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Photo Editor" />
+    </group>
+
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/login"
+                android:icon="@drawable/ic_vpn_key_black_24dp"
+                android:title="Login"
+                />
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
+                android:title="Logout" />
+        </menu>
+    </item>
+
+</menu>

@@ -16,13 +16,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 123;
-    DatabaseReference database;
+    public static final int RC_SIGN_IN = 123;
+    static DatabaseReference database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // go to feed activity
 
         database = FirebaseDatabase.getInstance().getReference();
 
@@ -36,20 +36,11 @@ public class MainActivity extends AppCompatActivity {
             User user = new User(fbUser.getUid(), fbUser.getDisplayName(), token);
             database.child("users").child(user.uid).setValue(user);
 
-            // go to feed activity
-            Intent intent = new Intent(this, FeedActivity.class);
+            Intent intent = new Intent(this, MainPage.class);
             startActivity(intent);
         }
     }
 
-    // Using AuthUI to implement Firebase Login
-    // https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md
-    public void signIn(View view) {
-        startActivityForResult(
-                // Get an instance of AuthUI based on the default app
-                AuthUI.getInstance().createSignInIntentBuilder().setTheme(R.style.FirebaseLoginTheme).build(),
-                RC_SIGN_IN);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -70,11 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 User user = new User(fbUser.getUid(), fbUser.getDisplayName(), token);
                 database.child("users").child(user.uid).setValue(user);
 
-               Toast.makeText(this, "Authenticated as " + fbUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Authenticated as " + fbUser.getDisplayName(), Toast.LENGTH_SHORT).show();
 
-                // go to feed activity
-                Intent intent = new Intent(this, FeedActivity.class);
-                startActivity(intent);
 
             } else {
                 // Sign in failed, check response for error code
