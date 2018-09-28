@@ -18,5 +18,5 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
     }
 
-
+    
 }
