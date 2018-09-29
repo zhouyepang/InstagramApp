@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.MissingFormatArgumentException;
+
 public class MainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -140,10 +142,12 @@ public class MainPage extends AppCompatActivity
     }
 
     public void UserFeed(View view) {
-        setContentView(R.layout.activity_main_page);
+        Intent mainPageIntent = new Intent(this, MainPage.class);
+        startActivity(mainPageIntent);
     }
     public void discover(View view) {
-        setContentView(R.layout.discover);
+        Intent searchIntent = new Intent(this, Discover.class);
+        startActivity(searchIntent);
     }
     public void uploadImage(View view) {
 
@@ -151,11 +155,9 @@ public class MainPage extends AppCompatActivity
     public void ActivityFeed(View view) {
 
     }
-    public void searchUser(View view) {
-        EditText enteredUserName = (EditText)findViewById(R.id.enteredUserName);
-        database.searchUserNameList(enteredUserName.getText().toString());
-    }
+
     public void Profile(View view) {
-        setContentView(R.layout.profile);
+        Intent searchIntent = new Intent(this, Profile.class);
+        startActivity(searchIntent);
     }
 }
