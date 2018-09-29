@@ -1,8 +1,7 @@
 package com.example.zhouyepang.instagramapp;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,14 +11,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.widget.*;
+import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class MainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public boolean isLogin = false;
+    public String currUserName;
+    public User user;
+    RetriveData database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        database = new RetriveData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -43,6 +53,33 @@ public class MainPage extends AppCompatActivity
                 // Get an instance of AuthUI based on the default app
                 AuthUI.getInstance().createSignInIntentBuilder().setTheme(R.style.FirebaseLoginTheme).build(),
                 MainActivity.RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MainActivity.RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+                // get the FCM token
+                String token = FirebaseInstanceId.getInstance().getToken();
+                // save the user info in the database to users/UID/
+                // we'll use the UID as part of the path
+                this.user = new User(fbUser.getUid(), fbUser.getDisplayName(), token);
+                MainActivity.database.child("users").child(user.uid).setValue(user);
+                Toast.makeText(this, "Authenticated as " + fbUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+                currUserName = this.user.getDisplayName();
+                TextView text = findViewById(R.id.userNameDisplay);
+                this.isLogin = true;
+            } else {
+                // Sign in failed, check response for error code
+                if (response != null) {
+                    Toast.makeText(this, response.getError().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     @Override
@@ -113,6 +150,10 @@ public class MainPage extends AppCompatActivity
     }
     public void ActivityFeed(View view) {
 
+    }
+    public void searchUser(View view) {
+        EditText enteredUserName = (EditText)findViewById(R.id.enteredUserName);
+        database.searchUserNameList(enteredUserName.getText().toString());
     }
     public void Profile(View view) {
         setContentView(R.layout.profile);
