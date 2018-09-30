@@ -32,6 +32,10 @@
             android:name=".Discover"
             android:parentActivityName=".MainPage" />
 
+        <activity
+            android:name=".ImageSelect"
+            android:parentActivityName=".MainPage" />
+
         <activity android:name=".Profile"
             android:parentActivityName=".MainPage" ></activity>
 
