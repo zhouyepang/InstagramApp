@@ -150,8 +150,8 @@ public class MainPage extends AppCompatActivity
         startActivity(searchIntent);
     }
     public void uploadImage(View view) {
-        Intent imageIntent = new Intent(this, ImageSelect.class);
-        startActivity(imageIntent);
+        Intent uploadIntent = new Intent(this, UploadSelect.class);
+        startActivity(uploadIntent);
     }
     public void ActivityFeed(View view) {
 

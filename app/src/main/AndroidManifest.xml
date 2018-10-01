@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.zhouyepang.instagramapp">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -31,15 +32,12 @@
         <activity
             android:name=".Discover"
             android:parentActivityName=".MainPage" />
-
         <activity
-            android:name=".ImageSelect"
+            android:name=".UploadSelect"
             android:parentActivityName=".MainPage" />
-
-        <activity android:name=".Profile"
-            android:parentActivityName=".MainPage" ></activity>
-
-
+        <activity
+            android:name=".Profile"
+            android:parentActivityName=".MainPage" />
 
     </application>
 

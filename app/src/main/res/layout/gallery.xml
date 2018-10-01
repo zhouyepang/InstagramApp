@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/photoPreview"
+            android:layout_width="match_parent"
+            android:layout_height="446dp"
+            android:background="@color/green"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btn_click_select"
+            android:layout_width="190dp"
+            android:layout_height="65dp"
+            android:layout_below="@+id/photoPreview"
+            android:onClick="onClick"
+            android:text="select" />
+
+        <Button
+            android:id="@+id/btn_click_next"
+            android:layout_width="190dp"
+            android:layout_height="65dp"
+            android:layout_alignTop="@+id/btn_click_select"
+            android:layout_toEndOf="@+id/btn_click_select"
+            android:onClick="onClick"
+            android:text="next" />
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>
