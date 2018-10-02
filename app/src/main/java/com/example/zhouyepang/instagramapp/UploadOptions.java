@@ -46,7 +46,7 @@ public class UploadOptions extends AppCompatActivity {
         btnEditor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                editing();
             }
         });
 
@@ -70,24 +70,17 @@ public class UploadOptions extends AppCompatActivity {
         com.example.zhouyepang.instagramapp.SendData.uploadImage(UploadOptions.this, fbUser, imageUri, database, "PostImage");
     }
 
+    private void editing(){
+        Intent editorIntent = new Intent(this, PhotoEditor.class);
+        editorIntent.putExtra("imageUri", imageUri.toString());
+        startActivity(editorIntent);
+    }
+
     private void returnToMain() {
-        Intent intent = new Intent(this,MainPage.class);
+        Intent intent = new Intent(this, MainPage.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 
-    /*
-    private Bitmap uriToBitMap(Uri uri) {
-        Bitmap bit = null;
-        try {
-            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Log.d("tag",e.getMessage());
-            Toast.makeText(this,"Crash",Toast.LENGTH_SHORT).show();
-        }
-        return bit;
-    }
-    */
 }

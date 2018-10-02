@@ -1,9 +1,11 @@
 package com.example.zhouyepang.instagramapp;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +19,10 @@ import android.widget.*;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.BitmapFactory;
 
+import java.io.FileNotFoundException;
+
 public class PhotoEditor extends AppCompatActivity {
     ImageView tempImageView;
-    Drawable tempDrawable;
     Bitmap bitmapImage;
     Bitmap preview1;
     Bitmap preview2;
@@ -28,15 +31,18 @@ public class PhotoEditor extends AppCompatActivity {
     SeekBar contrastBar;
     SeekBar brightnessSeekbar;
     Bitmap finalImage;
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_editor);
 
-        tempDrawable = getResources().getDrawable(R.drawable.jiangzemin);
+        Intent intent = getIntent();
+        imageUri = Uri.parse(intent.getStringExtra("imageUri"));
+
         tempImageView = (ImageView) findViewById(R.id.showImage);
-        bitmapImage = ((BitmapDrawable) tempDrawable).getBitmap();
+        bitmapImage = uriToBitMap(imageUri);
         preview1 = origin(bitmapImage);
         preview2 = warm(bitmapImage);
         preview3 = blackAndWhite(bitmapImage);
@@ -55,7 +61,7 @@ public class PhotoEditor extends AppCompatActivity {
         brightnessSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                finalImage = changeBitmapContrastBrightness(BitmapFactory.decodeResource(getResources(), R.drawable.jiangzemin),
+                finalImage = changeBitmapContrastBrightness(bitmapImage,
                         1, (float) progress / 1f);
                 tempImageView.setImageBitmap(finalImage);
                 // textView.setText("Contrast: "+(float) progress / 100f);
@@ -74,7 +80,7 @@ public class PhotoEditor extends AppCompatActivity {
         contrastBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                finalImage = changeBitmapContrastBrightness(BitmapFactory.decodeResource(getResources(), R.drawable.jiangzemin),
+                finalImage = changeBitmapContrastBrightness(bitmapImage,
                         (float)progress / 100f, 1);
                 tempImageView.setImageBitmap(finalImage);
                 // textView.setText("Contrast: "+(float) progress / 100f);
@@ -232,4 +238,15 @@ public class PhotoEditor extends AppCompatActivity {
         return ret;
     }
 
+    private Bitmap uriToBitMap(Uri uri) {
+        Bitmap bit = null;
+        try {
+            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.d("tag",e.getMessage());
+            Toast.makeText(this,"Crash",Toast.LENGTH_SHORT).show();
+        }
+        return bit;
+    }
 }

@@ -158,9 +158,7 @@ public class MainPage extends AppCompatActivity
     }
 
     public void Profile(View view) {
-        Intent uploadIntent = new Intent(this, PhotoEditor.class);
-        startActivity(uploadIntent);
-        //Intent searchIntent = new Intent(this, Profile.class);
-        //startActivity(searchIntent);
+        Intent searchIntent = new Intent(this, Profile.class);
+        startActivity(searchIntent);
     }
 }

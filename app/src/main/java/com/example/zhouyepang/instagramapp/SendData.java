@@ -48,4 +48,11 @@ public class SendData {
             }
         });
     }
+
+    public static void uploadText(final Context context, final FirebaseUser fbUser, Uri imageUri, final DatabaseReference database, final String databaseCategory) {
+
+    }
+    public static void sendPost(final Context context, final FirebaseUser fbUser, Uri imageUri, final DatabaseReference database, final String databaseCategory) {
+        uploadImage(context, fbUser, imageUri, database, databaseCategory);
+    }
 }

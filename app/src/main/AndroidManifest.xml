@@ -41,8 +41,9 @@
         <activity
             android:name=".UploadOptions"
             android:parentActivityName=".UploadSelect" />
+
         <activity android:name=".PhotoEditor"
-            android:parentActivityName=".MainPage"></activity>
+            android:parentActivityName=".UploadOptions"></activity>
     </application>
 
 </manifest>
