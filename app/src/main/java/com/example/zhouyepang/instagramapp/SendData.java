@@ -20,7 +20,17 @@ import java.util.Date;
 
 public class SendData {
 
-    public static void uploadImage(final Context context, final FirebaseUser fbUser, Uri imageUri, final DatabaseReference database, final String databaseCategory) {
+
+    public static void uploadImage(final Context context, final FirebaseUser fbUser, final Uri imageUri, final DatabaseReference database, String postImages, final boolean imageType) {
+
+        final boolean post = true;
+        final boolean avatar = false;
+        final String databaseCategory;
+        if (imageType == true) {
+            databaseCategory = "postImage";
+        } else {
+            databaseCategory = "avatar";
+        }
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference imagesRef = storageRef.child("images").child(databaseCategory);
@@ -42,17 +52,23 @@ public class SendData {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 Toast.makeText(context, "Upload finished!", Toast.LENGTH_SHORT).show();
                 // save image to database
-                String key = database.child("images").child(databaseCategory).push().getKey();
-                com.example.zhouyepang.instagramapp.Image image = new com.example.zhouyepang.instagramapp.Image(key, fbUser.getUid(), downloadUrl.toString());
-                database.child("images").child(databaseCategory).child(key).setValue(image);
+                if (imageType == post) {
+                    avatarToDB(context, fbUser, imageUri, database, imageType, databaseCategory, downloadUrl);
+                } else {
+                    avatarToDB(context, fbUser, imageUri, database, imageType, databaseCategory, downloadUrl);
+                }
             }
         });
     }
 
-    public static void uploadText(final Context context, final FirebaseUser fbUser, Uri imageUri, final DatabaseReference database, final String databaseCategory) {
+    private static void postToDB(){
 
     }
-    public static void sendPost(final Context context, final FirebaseUser fbUser, Uri imageUri, final DatabaseReference database, final String databaseCategory) {
-        uploadImage(context, fbUser, imageUri, database, databaseCategory);
+
+    private static void avatarToDB(final Context context, final FirebaseUser fbUser, Uri imageUri, final DatabaseReference database, boolean imageType, final String databaseCategory, Uri downloadUrl) {
+        String key = database.child("images").child(databaseCategory).push().getKey();
+        com.example.zhouyepang.instagramapp.Image image = new com.example.zhouyepang.instagramapp.Image(key, fbUser.getUid(), downloadUrl.toString());
+        database.child("images").child(databaseCategory).child(key).setValue(image);
     }
 }
+

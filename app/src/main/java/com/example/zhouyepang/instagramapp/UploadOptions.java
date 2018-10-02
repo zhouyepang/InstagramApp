@@ -67,7 +67,7 @@ public class UploadOptions extends AppCompatActivity {
     }
 
     private void uploadPost() {
-        com.example.zhouyepang.instagramapp.SendData.uploadImage(UploadOptions.this, fbUser, imageUri, database, "PostImage");
+        com.example.zhouyepang.instagramapp.SendData.uploadImage(UploadOptions.this, fbUser, imageUri, database, "postImages", false);
     }
 
     private void editing(){

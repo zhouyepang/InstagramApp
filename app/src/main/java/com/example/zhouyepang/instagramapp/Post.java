@@ -1,13 +1,13 @@
 package com.example.zhouyepang.instagramapp;
 
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
 
-@IgnoreExtraProperties
-public class Image {
+public class Post {
     public String key;
     public String userId;
     public String downloadUrl;
+    public String comment;
+
 
     @Exclude
     public User user;
@@ -21,13 +21,20 @@ public class Image {
     @Exclude
     public String userLike;
 
-    public Image() {
+    public Post() {
     }
 
-    public Image(String key, String userId, String downloadUrl) {
+    public Post(String key, String userId, String downloadUrl) {
         this.key = key;
         this.userId = userId;
         this.downloadUrl = downloadUrl;
     }
 
+    public void addLike() {
+        this.likes++;
+    }
+
+    public void removeLike() {
+        this.likes--;
+    }
 }
