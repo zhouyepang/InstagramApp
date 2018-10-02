@@ -13,25 +13,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class UploadOptions extends AppCompatActivity {
     private Uri imageUri;
     private ImageView editedPreview;
     private Button btnEditor, btnPost;
     FirebaseUser fbUser;
+    DatabaseReference database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +36,7 @@ public class UploadOptions extends AppCompatActivity {
         if (fbUser == null) {
             finish();
         }
-
+        database = FirebaseDatabase.getInstance().getReference();
         initialingImage();
 
         btnEditor = (Button) findViewById(R.id.btnEditor);
@@ -59,7 +53,7 @@ public class UploadOptions extends AppCompatActivity {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadImage();
+                uploadPost();
                 returnToMain();
             }
         });
@@ -72,6 +66,10 @@ public class UploadOptions extends AppCompatActivity {
         editedPreview.setImageURI(imageUri);
     }
 
+    private void uploadPost() {
+        com.example.zhouyepang.instagramapp.SendData.uploadImage(UploadOptions.this, fbUser, imageUri, database, "PostImage");
+    }
+
     private void returnToMain() {
         Intent intent = new Intent(this,MainPage.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -79,30 +77,7 @@ public class UploadOptions extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void uploadImage() {
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference imagesRef = storageRef.child("images");
-        StorageReference userRef = imagesRef.child(fbUser.getUid());
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String filename = fbUser.getUid() + "_" + timeStamp;
-        StorageReference fileRef = userRef.child(filename);
-
-        UploadTask uploadTask = fileRef.putFile(imageUri);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                Toast.makeText(UploadOptions.this, "Upload failed!\n" + exception.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                Toast.makeText(UploadOptions.this, "Upload finished!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
+    /*
     private Bitmap uriToBitMap(Uri uri) {
         Bitmap bit = null;
         try {
@@ -114,4 +89,5 @@ public class UploadOptions extends AppCompatActivity {
         }
         return bit;
     }
+    */
 }
