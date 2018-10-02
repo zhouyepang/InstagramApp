@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +25,7 @@ public class UploadOptions extends AppCompatActivity {
     private Uri imageUri;
     private ImageView editedPreview;
     private Button btnEditor, btnPost;
+    private EditText description;
     FirebaseUser fbUser;
     DatabaseReference database;
 
@@ -36,9 +38,12 @@ public class UploadOptions extends AppCompatActivity {
         if (fbUser == null) {
             finish();
         }
+
         database = FirebaseDatabase.getInstance().getReference();
+
         initialingImage();
 
+        description = (EditText) findViewById(R.id.description);
         btnEditor = (Button) findViewById(R.id.btnEditor);
         btnPost = (Button) findViewById(R.id.btnPost);
 
@@ -67,7 +72,8 @@ public class UploadOptions extends AppCompatActivity {
     }
 
     private void uploadPost() {
-        com.example.zhouyepang.instagramapp.SendData.uploadImage(UploadOptions.this, fbUser, imageUri, database, "postImages", false);
+        String inputText = description.getText().toString();
+        com.example.zhouyepang.instagramapp.SendData.uploadImage(UploadOptions.this, fbUser, imageUri, database, "postImages", true, inputText);
     }
 
     private void editing(){

@@ -21,15 +21,15 @@ import java.util.Date;
 public class SendData {
 
 
-    public static void uploadImage(final Context context, final FirebaseUser fbUser, final Uri imageUri, final DatabaseReference database, String postImages, final boolean imageType) {
+    public static void uploadImage(final Context context, final FirebaseUser fbUser, final Uri imageUri, final DatabaseReference database, String postImages, final boolean imageType, final String inputText) {
 
         final boolean post = true;
         final boolean avatar = false;
         final String databaseCategory;
         if (imageType == true) {
-            databaseCategory = "postImage";
+            databaseCategory = "postImages";
         } else {
-            databaseCategory = "avatar";
+            databaseCategory = "avatars";
         }
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -53,7 +53,7 @@ public class SendData {
                 Toast.makeText(context, "Upload finished!", Toast.LENGTH_SHORT).show();
                 // save image to database
                 if (imageType == post) {
-                    avatarToDB(context, fbUser, imageUri, database, imageType, databaseCategory, downloadUrl);
+                    postToDB(context, fbUser, imageUri, database, imageType, databaseCategory, downloadUrl, inputText);
                 } else {
                     avatarToDB(context, fbUser, imageUri, database, imageType, databaseCategory, downloadUrl);
                 }
@@ -61,13 +61,20 @@ public class SendData {
         });
     }
 
-    private static void postToDB(){
+    private static void postToDB(final Context context, final FirebaseUser fbUser, Uri imageUri, final DatabaseReference database, boolean imageType, final String databaseCategory, Uri downloadUrl, String inputText){
+        String imagekey = database.child("images").child(databaseCategory).push().getKey();
+        String postkey = database.child("posts").push().getKey();
 
+        com.example.zhouyepang.instagramapp.Image image = new com.example.zhouyepang.instagramapp.Image(imagekey, fbUser.getUid(), downloadUrl.toString(), databaseCategory);
+        com.example.zhouyepang.instagramapp.Post post = new com.example.zhouyepang.instagramapp.Post(postkey, fbUser.getUid(), imagekey, downloadUrl.toString(), inputText);
+
+        database.child("images").child(databaseCategory).child(imagekey).setValue(image);
+        database.child("posts").child(postkey).setValue(post);
     }
 
     private static void avatarToDB(final Context context, final FirebaseUser fbUser, Uri imageUri, final DatabaseReference database, boolean imageType, final String databaseCategory, Uri downloadUrl) {
         String key = database.child("images").child(databaseCategory).push().getKey();
-        com.example.zhouyepang.instagramapp.Image image = new com.example.zhouyepang.instagramapp.Image(key, fbUser.getUid(), downloadUrl.toString());
+        com.example.zhouyepang.instagramapp.Image image = new com.example.zhouyepang.instagramapp.Image(key, fbUser.getUid(), downloadUrl.toString(), databaseCategory);
         database.child("images").child(databaseCategory).child(key).setValue(image);
     }
 }

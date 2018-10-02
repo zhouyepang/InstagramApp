@@ -5,8 +5,9 @@ import com.google.firebase.database.Exclude;
 public class Post {
     public String key;
     public String userId;
+    public String imageId;
     public String downloadUrl;
-    public String comment;
+    public String description;
 
 
     @Exclude
@@ -24,10 +25,12 @@ public class Post {
     public Post() {
     }
 
-    public Post(String key, String userId, String downloadUrl) {
+    public Post(String key, String userId, String imageId, String downloadUrl, String description) {
         this.key = key;
         this.userId = userId;
+        this.imageId = imageId;
         this.downloadUrl = downloadUrl;
+        this.description = description;
     }
 
     public void addLike() {

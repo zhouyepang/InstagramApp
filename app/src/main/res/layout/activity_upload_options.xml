@@ -23,7 +23,7 @@
         app:srcCompat="@drawable/common_full_open_on_phone" />
 
     <EditText
-        android:id="@+id/comment"
+        android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"

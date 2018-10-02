@@ -8,6 +8,7 @@ public class Image {
     public String key;
     public String userId;
     public String downloadUrl;
+    public String imageType;
 
     @Exclude
     public User user;
@@ -24,10 +25,11 @@ public class Image {
     public Image() {
     }
 
-    public Image(String key, String userId, String downloadUrl) {
+    public Image(String key, String userId, String downloadUrl, String imageType) {
         this.key = key;
         this.userId = userId;
         this.downloadUrl = downloadUrl;
+        this.imageType = imageType;
     }
 
 }
