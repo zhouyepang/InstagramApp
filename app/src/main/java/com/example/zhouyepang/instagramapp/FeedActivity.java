@@ -18,5 +18,25 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
     }
 
-    
+    public void UserFeed(View view) {
+
+    }
+    public void DISCOVER(View view) {
+
+    }
+    public void uploadImage(View view) {
+
+    }
+    public void ActivityFeed(View view) {
+
+    }
+    public void Profile(View view) {
+
+    }
+    public void CAMERA(View view) {
+
+    }
+    public void bluetooth(View view) {
+
+    }
 }
