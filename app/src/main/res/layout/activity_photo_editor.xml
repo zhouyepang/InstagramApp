@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PhotoEditor"
+    android:background ="@drawable/background"
+    >
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="60dp"
+        android:layout_height="39dp"
+        android:layout_above="@+id/showImage"
+        android:layout_marginStart="-141dp"
+        android:layout_toEndOf="@+id/imageButton5"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_add_a_photo_black_24dp" />
+
+    <ImageView
+        android:id="@+id/showImage"
+        android:layout_width="362dp"
+        android:layout_height="220dp"
+        android:layout_above="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/darker_gray"
+        app:srcCompat="@drawable/ic_launcher_foreground"
+        android:layout_below="@+id/Savebutton"/>
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/brightnessSeekBar"
+        android:layout_marginBottom="169dp"
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="265dp"
+        />
+
+    <SeekBar
+        android:id="@+id/brightnessSeekBar"
+        android:layout_width="274dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="67dp"
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="311dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="75dp"
+        android:layout_height="17dp"
+        android:layout_above="@+id/seekBar"
+        android:layout_alignStart="@+id/textView3"
+        android:text="Contrast"
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="294dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="143dp"
+        android:layout_marginStart="11dp"
+        android:text="Filter"
+
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="349dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="75dp"
+        android:layout_height="19dp"
+        android:layout_above="@+id/brightnessSeekBar"
+        android:layout_alignStart="@+id/seekBar"
+        android:text="Brightness"
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="246dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="-145dp"
+        android:background="@android:color/darker_gray"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/effect1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <ImageButton
+            android:id="@+id/effect2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+
+        <ImageButton
+            android:id="@+id/effect3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <ImageButton
+            android:id="@+id/effect4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/ic_launcher" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/Savebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="-99dp"
+        android:layout_toEndOf="@+id/button2"
+        android:text="Save" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/showImage"
+        android:layout_alignStart="@+id/showImage"
+        android:text="Preview"
+        android:textColor="@android:color/white"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/showImage"
+        android:layout_below="@+id/showImage"
+        app:srcCompat="@drawable/ic_brightness_high_black_24dp" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/showImage"
+        android:layout_below="@+id/brightnessSeekBar"
+        app:srcCompat="@drawable/ic_brightness_low_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="59dp"
+        android:layout_height="39dp"
+        android:layout_above="@+id/showImage"
+        android:layout_alignEnd="@+id/showImage"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_save_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="63dp"
+        android:layout_height="39dp"
+        android:layout_above="@+id/showImage"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="141dp"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_crop_black_24dp" />
+
+
+</RelativeLayout>
