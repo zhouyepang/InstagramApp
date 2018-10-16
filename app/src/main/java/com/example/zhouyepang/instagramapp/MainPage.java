@@ -2,6 +2,9 @@ package com.example.zhouyepang.instagramapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,8 +20,15 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.ValueEventListener;
 
+
+import java.util.ArrayList;
 import java.util.MissingFormatArgumentException;
 
 public class MainPage extends AppCompatActivity
@@ -28,6 +38,12 @@ public class MainPage extends AppCompatActivity
     public String currUserName;
     public User user;
     RetriveData database;
+
+    // Jason
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
+    ImageAdapter mAdapter;
+    ArrayList<Image> images = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +62,66 @@ public class MainPage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        // Setup the RecyclerView
+        recyclerView = findViewById(R.id.recyclerView);
+        mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new ImageAdapter(images, this);
+        recyclerView.setAdapter(mAdapter);
+
+        Log.d("MyApp","I am here");
+
+        // Get the latest 100 images
+        Query imagesQuery = MainActivity.database.child("images").child("postImages").orderByKey().limitToFirst(100);
+        imagesQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                // A new image has been added, add it to the displayed list
+                final Image image = dataSnapshot.getValue(Image.class);
+
+                // get the image user
+                MainActivity.database.child("users/" + image.userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        image.user = user;
+                        mAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                mAdapter.addImage(image);
+
+                Log.d("haha", ""+ image.key);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     // Using AuthUI to implement Firebase Login

@@ -11,4 +11,5 @@ public class FeedActivity extends AppCompatActivity {
 
     FirebaseUser fbUser;
     DatabaseReference database;
+
 }
