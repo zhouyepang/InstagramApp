@@ -1,5 +1,4 @@
 package com.example.zhouyepang.instagramapp;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,10 +25,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.ValueEventListener;
-
-
 import java.util.ArrayList;
-import java.util.MissingFormatArgumentException;
 
 public class MainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
