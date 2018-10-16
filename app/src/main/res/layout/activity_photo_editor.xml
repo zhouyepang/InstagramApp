@@ -8,44 +8,34 @@
     android:background ="@drawable/background"
     >
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="60dp"
-        android:layout_height="39dp"
-        android:layout_above="@+id/showImage"
-        android:layout_marginStart="-141dp"
-        android:layout_toEndOf="@+id/imageButton5"
-        android:background="@android:color/transparent"
-        app:srcCompat="@drawable/ic_add_a_photo_black_24dp" />
-
-    <ImageView
+    <com.fenchtose.nocropper.CropperView
         android:id="@+id/showImage"
-        android:layout_width="362dp"
-        android:layout_height="220dp"
+        android:layout_width="284dp"
+        android:layout_height="215dp"
         android:layout_above="@+id/textView3"
+        android:layout_below="@+id/Savebutton"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="3dp"
         android:background="@android:color/darker_gray"
-        app:srcCompat="@drawable/ic_launcher_foreground"
-        android:layout_below="@+id/Savebutton"/>
-
+        app:srcCompat="@drawable/ic_launcher_foreground" />
     <SeekBar
         android:id="@+id/seekBar"
-        android:layout_width="275dp"
+        android:layout_width="197dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/brightnessSeekBar"
         android:layout_marginBottom="169dp"
         tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="265dp"
-        />
+        tools:layout_editor_absoluteY="265dp" />
 
     <SeekBar
         android:id="@+id/brightnessSeekBar"
-        android:layout_width="274dp"
+        android:layout_width="197dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textView"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="67dp"
+        android:layout_marginEnd="144dp"
         tools:layout_editor_absoluteX="33dp"
         tools:layout_editor_absoluteY="311dp" />
 
@@ -140,7 +130,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/showImage"
-        android:layout_alignStart="@+id/showImage"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginBottom="-3dp"
         android:text="Preview"
         android:textColor="@android:color/white"
         android:textSize="25dp"
@@ -150,16 +141,17 @@
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/showImage"
+        android:layout_alignStart="@+id/textView2"
         android:layout_below="@+id/showImage"
+        android:layout_marginTop="-4dp"
         app:srcCompat="@drawable/ic_brightness_high_black_24dp" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/showImage"
-        android:layout_below="@+id/brightnessSeekBar"
+        android:layout_above="@+id/seekBar"
+        android:layout_alignStart="@+id/textView2"
         app:srcCompat="@drawable/ic_brightness_low_black_24dp" />
 
     <ImageButton
@@ -167,17 +159,29 @@
         android:layout_width="59dp"
         android:layout_height="39dp"
         android:layout_above="@+id/showImage"
-        android:layout_alignEnd="@+id/showImage"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="-3dp"
         android:background="@android:color/transparent"
         app:srcCompat="@drawable/ic_save_black_24dp" />
 
     <ImageButton
-        android:id="@+id/imageButton5"
+        android:id="@+id/snap"
+        android:layout_width="43dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/showImage"
+        android:layout_marginEnd="17dp"
+        android:layout_marginTop="-4dp"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_zoom_out_map_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/cropImage"
         android:layout_width="63dp"
         android:layout_height="39dp"
         android:layout_above="@+id/showImage"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="141dp"
+        android:layout_marginBottom="-3dp"
+        android:layout_toStartOf="@+id/imageButton3"
         android:background="@android:color/transparent"
         app:srcCompat="@drawable/ic_crop_black_24dp" />
 

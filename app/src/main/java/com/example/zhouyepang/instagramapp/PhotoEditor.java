@@ -18,11 +18,11 @@ import android.graphics.Paint;
 import android.widget.*;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.BitmapFactory;
-
+import android.graphics.Matrix;
 import java.io.FileNotFoundException;
+import com.fenchtose.nocropper.CropperView;
 
 public class PhotoEditor extends AppCompatActivity {
-    ImageView tempImageView;
     Bitmap bitmapImage;
     Bitmap preview1;
     Bitmap preview2;
@@ -32,7 +32,8 @@ public class PhotoEditor extends AppCompatActivity {
     SeekBar brightnessSeekbar;
     Bitmap finalImage;
     private Uri imageUri;
-
+    CropperView croppedView;
+    boolean croppedCentre = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,17 +42,19 @@ public class PhotoEditor extends AppCompatActivity {
         Intent intent = getIntent();
         imageUri = Uri.parse(intent.getStringExtra("imageUri"));
 
-        tempImageView = (ImageView) findViewById(R.id.showImage);
+        croppedView = (CropperView) findViewById(R.id.showImage);
         bitmapImage = uriToBitMap(imageUri);
         preview1 = origin(bitmapImage);
         preview2 = warm(bitmapImage);
         preview3 = blackAndWhite(bitmapImage);
         preview4 = invertColor(bitmapImage);
-        tempImageView.setImageBitmap(preview1);
+        croppedView.setImageBitmap(preview1);
         ImageButton b1 = (ImageButton) findViewById(R.id.effect1);
         ImageButton b2 = (ImageButton) findViewById(R.id.effect2);
         ImageButton b3 = (ImageButton) findViewById(R.id.effect3);
         ImageButton b4 = (ImageButton) findViewById(R.id.effect4);
+        ImageButton snap = (ImageButton) findViewById(R.id.snap);
+        ImageButton crop = (ImageButton) findViewById(R.id.cropImage);
         b1.setImageBitmap(preview1);
         b2.setImageBitmap(preview2);
         b3.setImageBitmap(preview3);
@@ -63,7 +66,7 @@ public class PhotoEditor extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 finalImage = changeBitmapContrastBrightness(bitmapImage,
                         1, (float) progress / 1f);
-                tempImageView.setImageBitmap(finalImage);
+                croppedView.setImageBitmap(finalImage);
                 // textView.setText("Contrast: "+(float) progress / 100f);
             }
             @Override
@@ -82,7 +85,7 @@ public class PhotoEditor extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 finalImage = changeBitmapContrastBrightness(bitmapImage,
                         (float)progress / 100f, 1);
-                tempImageView.setImageBitmap(finalImage);
+                croppedView.setImageBitmap(finalImage);
                 // textView.setText("Contrast: "+(float) progress / 100f);
             }
             @Override
@@ -101,7 +104,7 @@ public class PhotoEditor extends AppCompatActivity {
                 finalImage = preview1;
                 brightnessSeekbar.setProgress(0);
                 contrastBar.setProgress(100);
-                tempImageView.setImageBitmap(finalImage);
+                croppedView.setImageBitmap(finalImage);
             }
         });
 
@@ -112,7 +115,7 @@ public class PhotoEditor extends AppCompatActivity {
                 finalImage = preview2;
                 brightnessSeekbar.setProgress(0);
                 contrastBar.setProgress(100);
-                tempImageView.setImageBitmap(finalImage);
+                croppedView.setImageBitmap(finalImage);
             }
         });
 
@@ -123,7 +126,7 @@ public class PhotoEditor extends AppCompatActivity {
                 finalImage = preview3;
                 brightnessSeekbar.setProgress(0);
                 contrastBar.setProgress(100);
-                tempImageView.setImageBitmap(finalImage);
+                croppedView.setImageBitmap(finalImage);
             }
         });
 
@@ -135,13 +138,31 @@ public class PhotoEditor extends AppCompatActivity {
                 finalImage = preview4;
                 brightnessSeekbar.setProgress(0);
                 contrastBar.setProgress(100);
-                tempImageView.setImageBitmap(finalImage);
+                croppedView.setImageBitmap(finalImage);
             }
         });
-    }
 
-    public Bitmap getFinalImage() {
-        return finalImage;
+        snap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (croppedCentre) {
+                    croppedView.cropToCenter();
+                }else {
+                    croppedView.fitToCenter();
+                }
+                croppedCentre = ! croppedCentre;
+            }
+        });
+
+        crop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("cropped image");
+                Bitmap tempImage = croppedView.getCroppedBitmap();
+                finalImage = tempImage;
+                croppedView.setImageBitmap(finalImage);
+            }
+        });
     }
 
     public static Bitmap origin (Bitmap Original){

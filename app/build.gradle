@@ -34,10 +34,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:15.0.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
     compile 'com.firebase:firebase-client-android:2.5.0'
-
     //TabLayout
     compile 'com.android.support:support-v4:27.1.1'
     compile 'com.android.support:design:27.1.1'
+    compile 'com.fenchtose.nocropper:nocropper:0.1.7'
 
 }
 

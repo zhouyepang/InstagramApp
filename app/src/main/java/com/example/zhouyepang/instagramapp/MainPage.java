@@ -50,17 +50,17 @@ public class MainPage extends AppCompatActivity
         database = new RetriveData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -162,7 +162,7 @@ public class MainPage extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -203,7 +203,7 @@ public class MainPage extends AppCompatActivity
         } else if (id == R.id.follower) {
 
         } else if (id == R.id.bluetooth) {
-
+            bluetooth();
         } else if (id == R.id.photoEditor) {
 
         } else if (id == R.id.login) {
@@ -212,7 +212,7 @@ public class MainPage extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -236,5 +236,9 @@ public class MainPage extends AppCompatActivity
     public void Profile(View view) {
         Intent searchIntent = new Intent(this, Profile.class);
         startActivity(searchIntent);
+    }
+    public void bluetooth() {
+        Intent bluetoothIntent = new Intent(this, Bluetooth.class);
+        startActivity(bluetoothIntent);
     }
 }
