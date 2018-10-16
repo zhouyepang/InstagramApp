@@ -27,11 +27,9 @@ public class MainPage extends AppCompatActivity
     public boolean isLogin = false;
     public String currUserName;
     public User user;
-    RetriveData database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        database = new RetriveData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         Toolbar toolbar = findViewById(R.id.toolbar);

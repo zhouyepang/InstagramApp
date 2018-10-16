@@ -37,6 +37,7 @@ dependencies {
     compile 'com.android.support:support-v4:27.1.1'
     compile 'com.android.support:design:27.1.1'
     compile 'com.fenchtose.nocropper:nocropper:0.1.7'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 
 }
 
