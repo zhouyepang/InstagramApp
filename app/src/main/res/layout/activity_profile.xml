@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".Profile">
 
+    <include
+        android:id="@+id/parent_Layout"
+        layout="@layout/content_main_page"/>
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="92dp"

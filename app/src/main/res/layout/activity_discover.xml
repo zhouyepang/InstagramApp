@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
+    <include
+        android:id="@+id/parent_Layout"
+        layout="@layout/content_main_page"/>
     <TextView
         android:id="@+id/suggestedIntro"
         android:layout_width="273dp"
@@ -15,9 +17,10 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/suggestedNameView"
         android:layout_width="match_parent"
-        android:layout_height="432dp"
+        android:layout_height="383dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_marginBottom="49dp"
         android:layout_marginStart="0dp"
         android:clipChildren="true" />
 

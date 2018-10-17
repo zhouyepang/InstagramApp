@@ -65,7 +65,7 @@
             tools:layout_editor_absoluteY="459dp" />
 
         <ImageButton
-            android:id="@+id/SuggestFriend"
+            android:id="@+id/profileDisplay"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
