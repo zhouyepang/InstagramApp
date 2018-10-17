@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="false" />
@@ -50,13 +51,12 @@
         <activity
             android:name=".UploadOptions"
             android:parentActivityName=".UploadSelect" />
-
-        <activity android:name=".PhotoEditor"
-            android:parentActivityName=".UploadOptions"/>
+        <activity
+            android:name=".PhotoEditor"
+            android:parentActivityName=".UploadOptions" />
         <activity
             android:name=".Bluetooth"
             android:parentActivityName=".MainPage" />
-
         <activity
             android:name=".BlueToothUtil.BtClientActivity"
             android:label="bt_client"
@@ -65,7 +65,7 @@
             android:name=".BlueToothUtil.BtServerActivity"
             android:label="bt_server"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
+        <activity android:name=".SearchUser"></activity>
     </application>
 
 </manifest>
