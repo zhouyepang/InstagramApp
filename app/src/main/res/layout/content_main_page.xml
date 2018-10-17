@@ -55,12 +55,12 @@
             tools:layout_editor_absoluteY="459dp" />
 
         <ImageButton
-            android:id="@+id/Camera"
+            android:id="@+id/bluetoothButton"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="77dp"
             android:layout_height="wrap_content"
-            android:onClick="ActivityFeed"
-            app:srcCompat="@drawable/ic_menu_camera"
+            android:onClick="bluetooth"
+            app:srcCompat="@drawable/ic_bluetooth_black_24dp"
             tools:layout_editor_absoluteX="234dp"
             tools:layout_editor_absoluteY="459dp" />
 

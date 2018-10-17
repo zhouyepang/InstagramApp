@@ -222,9 +222,6 @@ public class MainPage extends AppCompatActivity
         Intent uploadIntent = new Intent(this, UploadSelect.class);
         startActivity(uploadIntent);
     }
-    public void ActivityFeed(View view) {
-
-    }
 
     public void Profile(View view) {
         Intent searchIntent = new Intent(this, Profile.class);
