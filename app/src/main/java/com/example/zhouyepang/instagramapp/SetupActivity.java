@@ -28,8 +28,9 @@ public class SetupActivity extends AppCompatActivity {
     private FirebaseAuth myAuth;
     private DatabaseReference usersRef;
     private String displayName;
+    private FirebaseUser currentUser;
 
-    String currentUserID;
+    private String currentUserID;
 
 
     @Override
@@ -38,6 +39,7 @@ public class SetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setup);
 
         myAuth = FirebaseAuth.getInstance();
+        currentUser = myAuth.getCurrentUser();
         currentUserID = myAuth.getCurrentUser().getUid();
         usersRef = FirebaseDatabase.getInstance().getReference().child("usersProfile").child(currentUserID);
         displayName = myAuth.getCurrentUser().getDisplayName();
@@ -60,7 +62,7 @@ public class SetupActivity extends AppCompatActivity {
     private void saveAccountSetupInfor() {
 
         String username = userName.getText().toString();
-        final String fullname = fullName.getText().toString();
+        String fullname = fullName.getText().toString();
         String country = countryName.getText().toString();
 
 
@@ -84,22 +86,27 @@ public class SetupActivity extends AppCompatActivity {
             try{
 
                 updateInfo(fullname, username, country);
+                if(currentUser!=null) {
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(fullName.getText().toString()).build();
+                    currentUser.updateProfile(profileUpdates);
+                }
 
-                myAuth.addAuthStateListener (new FirebaseAuth.AuthStateListener() {
+               /* myAuth.addAuthStateListener (new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         if(user!=null){
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(fullname).build();
+                                    .setDisplayName(fullName.getText().toString()).build();
                             user.updateProfile(profileUpdates);
 
                         }
                     }
-                });
+                }); */
                 sendUserToProfilePage();
                 Toast.makeText(this,"Your profile is updated successfully!",Toast.LENGTH_SHORT).show();
-                //sendUserToProfilePage();
+
 
 
             } catch (Exception e){
