@@ -1,4 +1,6 @@
 package com.example.zhouyepang.instagramapp;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +23,12 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
             super(v);
             userNameText = v.findViewById(R.id.user_name);
             addFriend = v.findViewById(R.id.add_button);
+
+
+
             }
         }
+
 
         private List<String> userInfo;
 
@@ -49,6 +55,12 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
         public int getItemCount() {
             return userInfo.size();
         }
+
+        /*public View getAddButton() {
+            return addFriend;
+        }*/
+
+
 
 
 }

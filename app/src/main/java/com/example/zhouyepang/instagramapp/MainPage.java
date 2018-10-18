@@ -34,6 +34,8 @@ public class MainPage extends AppCompatActivity
     public String currUserName;
     public User user;
 
+    private FirebaseAuth myAuth;
+
     // Jason
     RecyclerView recyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -44,6 +46,9 @@ public class MainPage extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+
+        myAuth = FirebaseAuth.getInstance();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -203,6 +208,10 @@ public class MainPage extends AppCompatActivity
         } else if (id == R.id.login) {
             signIn();
         } else if (id == R.id.logout) {
+            myAuth.signOut();
+            sendUsertoLoginActivity();
+
+
 
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -230,5 +239,13 @@ public class MainPage extends AppCompatActivity
     public void bluetooth() {
         Intent bluetoothIntent = new Intent(this, Bluetooth.class);
         startActivity(bluetoothIntent);
+    }
+
+    public void sendUsertoLoginActivity(){
+        Intent loginIntent = new Intent (this, MainActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginIntent);
+        finish();
+
     }
 }

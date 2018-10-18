@@ -65,7 +65,8 @@
             android:name=".BlueToothUtil.BtServerActivity"
             android:label="bt_server"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".SearchUser"></activity>
+        <activity android:name=".SearchUser" />
+        <activity android:name=".SetupActivity"></activity>
     </application>
 
 </manifest>

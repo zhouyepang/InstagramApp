@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.content.Intent;
 
+import com.firebase.ui.auth.AuthUI;
+
 
 public class Profile extends AppCompatActivity {
 
@@ -14,6 +16,7 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         enableToolBar();
+
     }
 
     public void enableToolBar(){
@@ -76,5 +79,10 @@ public class Profile extends AppCompatActivity {
     public void bluetooth(View view) {
         Intent bluetoothIntent = new Intent(this, Bluetooth.class);
         startActivity(bluetoothIntent);
+    }
+
+    public void editProfile(View view) {
+        Intent editIntent = new Intent(this, SetupActivity.class);
+        startActivity(editIntent);
     }
 }

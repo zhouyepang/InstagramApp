@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -19,11 +20,16 @@ public class MainActivity extends AppCompatActivity {
     public static final int RC_SIGN_IN = 123;
     public static DatabaseReference database;
 
+    public boolean isLogin = false;
+    public String currUserName;
+    public User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, MainPage.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, MainPage.class);
+        //startActivity(intent);
+        setContentView(R.layout.activity_main);
 
         database = FirebaseDatabase.getInstance().getReference();
 
@@ -35,9 +41,86 @@ public class MainActivity extends AppCompatActivity {
             // save the user info in the database to users/UID/
             // we'll use the UID as part of the path
             User user = new User(fbUser.getUid(), fbUser.getDisplayName(), token);
+
             database.child("users").child(user.uid).setValue(user);
 
+            Intent intent = new Intent(this, MainPage.class);
+            startActivity(intent);
+
+        }
+
+
+    }
+
+    public void signIn2(View view){
+        startActivityForResult(
+                // Get an instance of AuthUI based on the default app
+                AuthUI.getInstance().createSignInIntentBuilder().setTheme(R.style.FirebaseLoginTheme).build(),
+                MainActivity.RC_SIGN_IN);
+    }
+
+   /* @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+
+                // get the Firebase user
+                FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                // get the FCM token
+                String token = FirebaseInstanceId.getInstance().getToken();
+
+                // save the user info in the database to users/UID/
+                // we'll use the UID as part of the path
+                User user = new User(fbUser.getUid(), fbUser.getDisplayName(), token);
+                database.child("users").child(user.uid).setValue(user);
+
+                // go to feed activity
+                Intent intent = new Intent(this, FeedActivity.class);
+                startActivity(intent);
+            } else {
+                // Sign in failed, check response for error code
+                if (response != null) {
+                    Toast.makeText(this, response.getError().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MainActivity.RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+                // get the FCM token
+                String token = FirebaseInstanceId.getInstance().getToken();
+                // save the user info in the database to users/UID/
+                // we'll use the UID as part of the path
+                this.user = new User(fbUser.getUid(), fbUser.getDisplayName(), token);
+                database.child("users").child(user.uid).setValue(user);
+                Toast.makeText(this, "Authenticated as " + fbUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+                currUserName = this.user.getDisplayName();
+                //TextView text = findViewById(R.id.userNameDisplay);
+                this.isLogin = true;
+
+                Intent intent = new Intent(this, MainPage.class);
+                startActivity(intent);
+            } else {
+                // Sign in failed, check response for error code
+                if (response != null) {
+                    Toast.makeText(this, response.getError().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
+
 
 }
