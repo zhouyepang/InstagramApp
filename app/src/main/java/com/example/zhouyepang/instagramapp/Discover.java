@@ -19,21 +19,33 @@ public class Discover extends AppCompatActivity {
     ArrayList<String> userName;
     List<String> suggestedNames = new ArrayList<String>();
 
+    List<String> ids = new ArrayList<String>();
+
+    //SuggestUserDisplay adapter2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userName = new ArrayList<String>();
         setContentView(R.layout.activity_discover);
         suggestedNames = new ArrayList<String>();
+        ids = new ArrayList<String>();
         users = MainActivity.database.child("users");
+
+
+
         enableToolBar();
 
 
         users.addChildEventListener(new ChildEventListener() {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
+
                 suggestedNames.add(user.getDisplayName().toString());
-                displaySuggstedUser(suggestedNames);
+                ids.add(user.getUid());
+                displaySuggstedUser(suggestedNames, ids);
+                //adapter2 = new SuggestUserDisplay(suggestedNames);
+
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -120,10 +132,12 @@ public class Discover extends AppCompatActivity {
         startActivity(bluetoothIntent);
     }
 
-    public void displaySuggstedUser (List<String> names){
+    public void displaySuggstedUser (List<String> names, List<String> uIDs){
         RecyclerView userNamesView = (RecyclerView) findViewById(R.id.suggestedNameView);
-        SuggestUserDisplay adapter = new SuggestUserDisplay(names);
+        SuggestUserDisplay adapter = new SuggestUserDisplay(names, uIDs);
         userNamesView.setAdapter(adapter);
         userNamesView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+
 }

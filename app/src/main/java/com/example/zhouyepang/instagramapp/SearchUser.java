@@ -22,6 +22,8 @@ public class SearchUser extends AppCompatActivity {
     String searchedName;
     ArrayList<String> searchedNames;
     DatabaseReference users;
+
+    List<String> ids = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +40,10 @@ public class SearchUser extends AppCompatActivity {
                 User user = dataSnapshot.getValue(User.class);
                 if(user.getDisplayName().equals(searchedName) && searchedNames.size() == 0) {
                     searchedNames.add(user.getDisplayName().toString());
+                    ids.add(user.getUid());
                 }
                 if (searchedNames.size()>0) {
-                    displaySearchedUser(searchedNames);
+                    displaySearchedUser(searchedNames,ids);
                     Toast.makeText(getApplicationContext(),"User Found!",Toast.LENGTH_LONG).show();
                 }
             }
@@ -72,9 +75,9 @@ public class SearchUser extends AppCompatActivity {
         searchedName = searchName.getText().toString();
         searchUser(view);
     }
-    public void displaySearchedUser(List<String> names){
+    public void displaySearchedUser(List<String> names, List<String> uIDs){
         RecyclerView userNamesView = (RecyclerView) findViewById(R.id.searchResultView);
-        SuggestUserDisplay adapter = new SuggestUserDisplay(names);
+        SuggestUserDisplay adapter = new SuggestUserDisplay(names, uIDs);
         userNamesView.setAdapter(adapter);
         userNamesView.setLayoutManager(new LinearLayoutManager(this));
     }
