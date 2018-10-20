@@ -97,11 +97,13 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
                     if(dataSnapshot.hasChild(currID)){
 
                         addButton.setText("ADDED");
+                        addButton.setVisibility(View.VISIBLE);
 
                     } else if(currID.equals(currentUser.getUid().toString())){
                         addButton.setVisibility(View.INVISIBLE);
                     } else {
                         addButton.setText("ADD");
+                        addButton.setVisibility(View.VISIBLE);
                     }
 
 

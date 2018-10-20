@@ -20,6 +20,8 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +43,9 @@ public class MainPage extends AppCompatActivity
     RecyclerView.LayoutManager mLayoutManager;
     ImageAdapter mAdapter;
     ArrayList<Image> images = new ArrayList<>();
+
+    DatabaseReference loginedUser;
+    private String currentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +75,8 @@ public class MainPage extends AppCompatActivity
         mAdapter = new ImageAdapter(images, this);
         recyclerView.setAdapter(mAdapter);
 
+        currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         Log.d("MyApp","I am here");
 
         // Get the latest 100 images
@@ -96,7 +103,45 @@ public class MainPage extends AppCompatActivity
                     }
                 });
 
-                mAdapter.addImage(image);
+                //mAdapter.addImage(image);
+
+                loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUserID);
+
+
+                loginedUser.addChildEventListener(new ChildEventListener() {
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                        if(dataSnapshot.hasChild(image.userId)){
+
+                            mAdapter.addImage(image);
+
+                        }
+
+
+
+                    }
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
+
 
                 Log.d("haha", ""+ image.key);
             }

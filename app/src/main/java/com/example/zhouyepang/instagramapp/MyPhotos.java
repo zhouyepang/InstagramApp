@@ -89,7 +89,7 @@ public class MyPhotos extends AppCompatActivity {
 
                 }
 
-                Log.d("haha", ""+ image.key);
+                //Log.d("haha", ""+ image.key);
             }
 
             @Override
