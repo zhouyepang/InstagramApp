@@ -1,16 +1,11 @@
 package com.example.zhouyepang.instagramapp;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import java.util.ArrayList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -18,8 +13,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 import java.util.*;
 
 
@@ -50,7 +43,6 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
         private Context mContext;
 
 
-        // Pass in the contact array into the constructor
         public SuggestUserDisplay(List<String> userInfo, List<String> ids) {
             this.userInfo = userInfo;
             this.ids = ids;
@@ -68,13 +60,11 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
             return viewHolder;
         }
 
-
-
         public void onBindViewHolder(SuggestUserDisplay.ViewHolder viewHolder, final int position) {
-            String currUserName = userInfo.get(position);
             final String currID = ids.get(position);
+            String currentUserName =  MainActivity.lookUpUserID.lookUpUserNamebyId(currID);
             TextView usernameView = viewHolder.userNameText;
-            usernameView.setText(currUserName);
+            usernameView.setText(currentUserName);
             final Button addButton = viewHolder.addFriend;
 
 
@@ -201,7 +191,6 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
             following.child("followTo").child(currID).setValue(currID);
             following2 = FirebaseDatabase.getInstance().getReference().child("follower").child(currID);
             following2.child("whoFollowsMe").child(uid).setValue(uid);
-
 
 
 

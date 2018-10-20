@@ -30,4 +30,6 @@ public class User {
         return token;
     }
 
+    public static class DisplaySinglePost {
+    }
 }

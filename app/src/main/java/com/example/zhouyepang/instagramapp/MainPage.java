@@ -300,8 +300,6 @@ public class MainPage extends AppCompatActivity
             myAuth.signOut();
             sendUsertoLoginActivity();
 
-
-
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

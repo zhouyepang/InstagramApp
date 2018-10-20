@@ -11,21 +11,21 @@
 
     <LinearLayout
         android:id="@+id/toplayout"
-        android:layout_width="match_parent"
-        android:layout_height="47dp"
+        android:layout_width="367dp"
+        android:layout_height="46dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
             android:id="@+id/UserFeed"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="72dp"
+            android:layout_width="62dp"
             android:layout_height="wrap_content"
             android:onClick="UserFeed"
             app:srcCompat="@drawable/ic_home_black_24dp"
@@ -35,7 +35,7 @@
         <ImageButton
             android:id="@+id/Search"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="74dp"
             android:layout_height="match_parent"
             android:icon="@drawable/ic_menu_camera"
             android:onClick="discover"
@@ -46,7 +46,7 @@
         <ImageButton
             android:id="@+id/uploadImage"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="82dp"
+            android:layout_width="77dp"
             android:layout_height="wrap_content"
             android:icon="@drawable/ic_add_box_black_24dp"
             android:onClick="uploadImage"
@@ -67,7 +67,7 @@
         <ImageButton
             android:id="@+id/profileDisplay"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="75dp"
+            android:layout_width="66dp"
             android:layout_height="wrap_content"
             android:onClick="Profile"
             app:srcCompat="@drawable/ic_person_outline_black_24dp"

@@ -8,6 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import com.squareup.picasso.Picasso;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.content.Intent;
+import android.content.Context;
+import android.widget.ImageButton;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
     private ArrayList<Image> mDataset;
@@ -17,14 +22,17 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         public TextView mTextView;
         public ImageView mImageView;
         public Button mLikeButton;
+        public ImageButton mComment;
 
         public ViewHolder(View v) {
             super(v);
             mTextView = v.findViewById(R.id.textView2);
             mImageView = v.findViewById(R.id.imageView);
             mLikeButton = v.findViewById(R.id.likeButton);
+            mComment= v.findViewById(R.id.comment);
         }
     }
+
 
     public ImageAdapter(ArrayList<Image> myDataset, MainPage activity) {
         mDataset = myDataset;
@@ -64,6 +72,22 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 mActivity.setLiked(image);
             }
         });
+        holder.mComment.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                openSinglePost(v, image);
+            }
+        });
+        holder.mImageView.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                openSinglePost(v, image);
+            }
+        });
+    }
+    public void openSinglePost(View view, Image image){
+        Context context = view.getContext();
+        Intent postPage = new Intent(context, DisplayPostDetail.class);
+        postPage.putExtra("imageId",  image.key);
+        context.startActivity(postPage);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

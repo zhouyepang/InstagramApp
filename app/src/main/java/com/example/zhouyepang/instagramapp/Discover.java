@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import java.util.*;
 import 	android.support.v7.widget.LinearLayoutManager;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -13,11 +12,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.FirebaseDatabase;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.content.Intent;
+
 
 public class Discover extends AppCompatActivity {
 
@@ -87,8 +86,6 @@ public class Discover extends AppCompatActivity {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         currentUserID =  currentUser.getUid();
         suggestedID = new ArrayList<String>();
-        Log.v("suggest user ", currentUserID);
-        System.out.println("current user id : "+ currentUserID);
         userFollowing = FirebaseDatabase.getInstance().getReference().child("following").child(currentUserID).child("followTo");
         userFollowing .addChildEventListener(new ChildEventListener() {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
