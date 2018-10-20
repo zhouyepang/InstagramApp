@@ -288,7 +288,7 @@ public class MainPage extends AppCompatActivity
 
         if (id == R.id.following) {
             // Handle the camera action
-        } else if (id == R.id.follower) {
+        } else if (id == R.id.followers) {
 
         } else if (id == R.id.bluetooth) {
             bluetooth();

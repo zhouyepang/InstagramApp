@@ -9,7 +9,7 @@
             android:icon="@drawable/ic_people_black_24dp"
             android:title="Following" />
         <item
-            android:id="@+id/follower"
+            android:id="@+id/followers"
             android:icon="@drawable/ic_people_black_24dp"
             android:title="Follower" />
         <item

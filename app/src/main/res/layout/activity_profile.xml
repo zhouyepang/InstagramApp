@@ -11,11 +11,11 @@
         layout="@layout/content_main_page"/>
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/posts"
         android:layout_width="92dp"
         android:layout_height="27dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/textView"
+        android:layout_alignTop="@+id/following"
         android:layout_marginEnd="13dp"
         android:text="Posts : " />
 
@@ -31,16 +31,16 @@
         tools:layout_editor_absoluteY="16dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/following"
         android:layout_width="92dp"
         android:layout_height="27dp"
         android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/textView3"
+        android:layout_alignTop="@+id/followers"
         android:layout_marginStart="14dp"
         android:text="Following : " />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/followers"
         android:layout_width="92dp"
         android:layout_height="27dp"
         android:layout_alignParentTop="true"

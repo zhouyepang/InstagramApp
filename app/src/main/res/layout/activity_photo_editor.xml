@@ -12,7 +12,7 @@
         android:id="@+id/showImage"
         android:layout_width="284dp"
         android:layout_height="215dp"
-        android:layout_above="@+id/textView3"
+        android:layout_above="@+id/followers"
         android:layout_below="@+id/Savebutton"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="4dp"
@@ -33,18 +33,18 @@
         android:id="@+id/brightnessSeekBar"
         android:layout_width="197dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView"
+        android:layout_above="@+id/following"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="144dp"
         tools:layout_editor_absoluteX="33dp"
         tools:layout_editor_absoluteY="311dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/following"
         android:layout_width="75dp"
         android:layout_height="17dp"
         android:layout_above="@+id/seekBar"
-        android:layout_alignStart="@+id/textView3"
+        android:layout_alignStart="@+id/followers"
         android:text="Contrast"
         tools:layout_editor_absoluteX="33dp"
         tools:layout_editor_absoluteY="294dp"
@@ -67,7 +67,7 @@
         tools:layout_editor_absoluteY="349dp" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/followers"
         android:layout_width="75dp"
         android:layout_height="19dp"
         android:layout_above="@+id/brightnessSeekBar"
