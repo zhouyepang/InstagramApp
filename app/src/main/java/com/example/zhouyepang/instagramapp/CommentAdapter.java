@@ -53,8 +53,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         String commentContent = comment.getContent();
         TextView usernameView = viewHolder.userNameText;
         TextView commentView = viewHolder.comment;
-        System.out.println("user name : "+userName);
-        System.out.println("comment content : "+commentContent);
         commentView.setText(commentContent);
         usernameView.setText(userName);
     }
