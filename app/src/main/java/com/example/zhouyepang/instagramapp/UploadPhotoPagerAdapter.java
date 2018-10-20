@@ -14,7 +14,7 @@ public class UploadPhotoPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 1) {
-            return new Camera();
+            return new TakePhoto();
         }
         return new Gallery();
     }

@@ -6,6 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.example.zhouyepang.instagramapp.GridOverlay
+        android:id="@+id/drawGridView"
+        android:layout_width="383dp"
+        android:layout_height="445dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginStart="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/shot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FlashLight"
+        android:visibility="invisible"/>
+
     <SurfaceView
         android:id="@+id/surfaceView"
         android:layout_width="383dp"
