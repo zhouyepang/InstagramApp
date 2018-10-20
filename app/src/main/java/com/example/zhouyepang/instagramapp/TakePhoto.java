@@ -1,5 +1,6 @@
 package com.example.zhouyepang.instagramapp;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
@@ -70,7 +71,6 @@ public class TakePhoto  extends Fragment {
     private CaptureRequest.Builder previewRequestBuilder;
     private CameraCaptureSession cameraCaptureSessions;
     private File file;
-    private int flashOption;
     private Switch swiFlash;
     private GridOverlay gridOverlay;
     private Switch swiGrid;
@@ -94,7 +94,6 @@ public class TakePhoto  extends Fragment {
         final View thisView = inflater.inflate(R.layout.camera, container, false);
 
         surfaceView = thisView.findViewById(R.id.surfaceView);
-        flashOption = 0;
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.setKeepScreenOn(true);
         btnShot = thisView.findViewById(R.id.shot);
@@ -166,9 +165,9 @@ public class TakePhoto  extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    flashOption = 1;
+                    setOpenFlash();
                 } else {
-                    flashOption = 0;
+                    setCloseFlash();
                 }
             }
         });
@@ -328,20 +327,35 @@ public class TakePhoto  extends Fragment {
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureRequestBuilder.addTarget(imageReader.getSurface());
             captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-            if (flashOption == 0){
-                captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_OFF);
-                captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
-            } else {
-                captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
-                captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH);
-            }
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
             int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
             captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
             CaptureRequest mCaptureRequest = captureRequestBuilder.build();
             cameraCaptureSessions.capture(mCaptureRequest, null, childHandler);
-            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_OFF);
-            captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
             cameraCaptureSessions.stopRepeating();
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("NewApi")
+    public void setOpenFlash() {
+        previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
+        previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
+
+        try {
+            cameraCaptureSessions.setRepeatingRequest(previewRequestBuilder.build(),null,childHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("NewApi")
+    public void setCloseFlash() {
+        previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_OFF);
+        previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
+        try {
+            cameraCaptureSessions.setRepeatingRequest(previewRequestBuilder.build(),null,childHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
