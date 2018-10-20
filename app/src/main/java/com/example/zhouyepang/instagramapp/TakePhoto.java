@@ -94,7 +94,7 @@ public class TakePhoto  extends Fragment {
         final View thisView = inflater.inflate(R.layout.camera, container, false);
 
         surfaceView = thisView.findViewById(R.id.surfaceView);
-
+        flashOption = 0;
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.setKeepScreenOn(true);
         btnShot = thisView.findViewById(R.id.shot);
@@ -166,9 +166,9 @@ public class TakePhoto  extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    flashOption = 0;
-                } else {
                     flashOption = 1;
+                } else {
+                    flashOption = 0;
                 }
             }
         });
@@ -290,13 +290,7 @@ public class TakePhoto  extends Fragment {
                     cameraCaptureSessions = cameraCaptureSession;
                     try {
                         previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-                        if (flashOption == 0){
-                            previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_OFF);
-                            previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
-                        } else {
-                            previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);
-                            previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH);
-                        }
+                        previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
                         CaptureRequest previewRequest = previewRequestBuilder.build();
                         cameraCaptureSessions.setRepeatingRequest(previewRequest, null, childHandler);
                     } catch (CameraAccessException e) {
@@ -338,8 +332,8 @@ public class TakePhoto  extends Fragment {
                 captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_OFF);
                 captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
             } else {
-                captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);
-                captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH);
+                captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
+                captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
             }
             int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
             captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
