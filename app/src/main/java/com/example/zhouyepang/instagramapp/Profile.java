@@ -5,17 +5,80 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.content.Intent;
+import android.widget.TextView;
 
-import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class Profile extends AppCompatActivity {
+
+    private TextView following, followers, posts;
+    private FirebaseUser currentUser;
+    //private DatabaseReference following;
+    DatabaseReference loginedUser;
+    DatabaseReference loginedUser2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         enableToolBar();
+
+        following = (TextView) findViewById(R.id.following);
+        followers = (TextView) findViewById(R.id.followers);
+        posts = (TextView) findViewById(R.id.posts);
+
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUser.getUid());
+        loginedUser2 = FirebaseDatabase.getInstance().getReference().child("follower").child(currentUser.getUid());
+
+        loginedUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+
+                    Long a = dataSnapshot.child("followTo").getChildrenCount();
+                    following.setText("Following:"+ a);
+
+                    //Long b = dataSnapshot.child("whoFollowsMe").getChildrenCount();
+                    //followers.setText("Follower:"+ b);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        loginedUser2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+
+                    //Long a = dataSnapshot.child("followTo").getChildrenCount();
+                    //following.setText("Following:"+ a);
+
+                    Long b = dataSnapshot.child("whoFollowsMe").getChildrenCount();
+                    followers.setText("Follower:"+ b);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
     }
 

@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import java.util.*;
 
@@ -48,6 +49,7 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
         private FirebaseUser currentUser;
         private DatabaseReference following;
         DatabaseReference loginedUser;
+        private DatabaseReference following2;
 
         private Context mContext;
 
@@ -83,6 +85,33 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
 
             loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUser.getUid());
 
+            /*loginedUser.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    if(dataSnapshot.exists()) {
+
+                        if(dataSnapshot.child("followTo").hasChild(currID)) {
+                            addButton.setVisibility(View.VISIBLE);
+                            addButton.setText("ADDED");
+                        } else if (currID.equals(currentUser.getUid().toString())) {
+                            addButton.setVisibility(View.INVISIBLE);
+                        } else {
+
+                            addButton.setVisibility(View.VISIBLE);
+                            addButton.setText("ADD");
+                        }
+
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            }); */
 
             if(currID.equals(currentUser.getUid().toString())){
                 addButton.setVisibility(View.INVISIBLE);
@@ -101,11 +130,13 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
 
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
+
+
                         if (dataSnapshot.hasChild(currID)) {
 
                             //addButton.setText("ADDED");
                             addButton.setVisibility(View.VISIBLE);
-                            addButton.setText("ADDED");
+                            addButton.setText("FOLLOWED");
 
                         } else if (currID.equals(currentUser.getUid().toString())) {
                             addButton.setVisibility(View.INVISIBLE);
@@ -162,7 +193,7 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
                     //Toast.makeText(mContext, userInfo.get(position), Toast.LENGTH_SHORT).show();
                     //Intent intent = new Intent(mContext, Profile.class);
                     //mContext.startActivity(intent);
-                    addButton.setText("ADDED");
+                    addButton.setText("FOLLOWED");
                 }
             });
 
@@ -172,6 +203,8 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
 
             following = FirebaseDatabase.getInstance().getReference().child("following").child(uid);
             following.child("followTo").child(currID).setValue(currID);
+            following2 = FirebaseDatabase.getInstance().getReference().child("follower").child(currID);
+            following2.child("whoFollowsMe").child(uid).setValue(uid);
 
 
 
