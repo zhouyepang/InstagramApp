@@ -339,6 +339,8 @@ public class TakePhoto  extends Fragment {
             captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
             CaptureRequest mCaptureRequest = captureRequestBuilder.build();
             cameraCaptureSessions.capture(mCaptureRequest, null, childHandler);
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_OFF);
+            captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
             cameraCaptureSessions.stopRepeating();
         } catch (CameraAccessException e) {
             e.printStackTrace();
