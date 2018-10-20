@@ -1,5 +1,6 @@
 package com.example.zhouyepang.instagramapp;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
@@ -330,18 +331,34 @@ public class TakePhoto  extends Fragment {
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureRequestBuilder.addTarget(imageReader.getSurface());
             captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-            if (flashOption == 0){
-                previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON);
-                previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_OFF);
-            } else {
-                previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
-                previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_SINGLE);
-            }
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
             int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
             captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
             CaptureRequest mCaptureRequest = captureRequestBuilder.build();
             cameraCaptureSessions.capture(mCaptureRequest, null, childHandler);
             cameraCaptureSessions.stopRepeating();
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("NewApi")
+    public void setOpenFlash() {
+        previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);
+        previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH);
+        try {
+            cameraCaptureSessions.setRepeatingRequest(previewRequestBuilder.build(),null,childHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("NewApi")
+    public void setCloseFlash() {
+        previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_OFF);
+        previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
+        try {
+            cameraCaptureSessions.setRepeatingRequest(previewRequestBuilder.build(),null,childHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
