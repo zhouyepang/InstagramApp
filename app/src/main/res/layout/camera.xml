@@ -121,21 +121,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="503dp" />
+        app:layout_constraintGuide_end="100dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="116dp" />
+        app:layout_constraintGuide_begin="120dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="272dp" />
+        app:layout_constraintGuide_end="120dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline12"
