@@ -37,9 +37,6 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
             super(v);
             userNameText = v.findViewById(R.id.user_name);
             addFriend = v.findViewById(R.id.add_button);
-
-
-
             }
         }
 
@@ -50,7 +47,6 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
         private DatabaseReference following;
         DatabaseReference loginedUser;
         private DatabaseReference following2;
-
         private Context mContext;
 
 

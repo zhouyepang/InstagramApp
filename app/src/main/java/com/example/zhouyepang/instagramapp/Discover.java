@@ -5,10 +5,16 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import java.util.*;
 import 	android.support.v7.widget.LinearLayoutManager;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.FirebaseDatabase;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.content.Intent;
@@ -20,7 +26,11 @@ public class Discover extends AppCompatActivity {
     List<String> suggestedNames = new ArrayList<String>();
     ImageButton searchPageButton;
     List<String> ids = new ArrayList<String>();
-
+    private  DatabaseReference userFollowing;
+    private FirebaseUser currentUser;
+    String currentUserID;
+    List <String> alreadyFollow;
+    private ArrayList<String> suggestedID;
     //SuggestUserDisplay adapter2;
 
     @Override
@@ -31,8 +41,11 @@ public class Discover extends AppCompatActivity {
         suggestedNames = new ArrayList<String>();
         ids = new ArrayList<String>();
         users = MainActivity.database.child("users");
+        CalSugguestedUser calSugguestedUser = new CalSugguestedUser();
+        alreadyFollow = new ArrayList <String>();
         searchPageButton = findViewById(R.id.searchPageButton);
         enableToolBar();
+        CalSugguestedUser();
         searchPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,13 +55,81 @@ public class Discover extends AppCompatActivity {
         users.addChildEventListener(new ChildEventListener() {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
-
                 suggestedNames.add(user.getDisplayName().toString());
                 ids.add(user.getUid());
-                displaySuggstedUser(suggestedNames, ids);
                 //adapter2 = new SuggestUserDisplay(suggestedNames);
 
             }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+    }
+
+    public void CalSugguestedUser(){
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentUserID =  currentUser.getUid();
+        suggestedID = new ArrayList<String>();
+        Log.v("suggest user ", currentUserID);
+        System.out.println("current user id : "+ currentUserID);
+        userFollowing = FirebaseDatabase.getInstance().getReference().child("following").child(currentUserID).child("followTo");
+        userFollowing .addChildEventListener(new ChildEventListener() {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String followingUserID = dataSnapshot.getKey();
+                alreadyFollow.add(followingUserID);
+                displaySuggstedUser(suggestedNames, ids);
+                lookUpFollowingUserFollows(followingUserID);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void lookUpFollowingUserFollows(String userID){
+        userFollowing = FirebaseDatabase.getInstance().getReference().child("following").child(currentUserID).child("followTo");
+        userFollowing .addChildEventListener(new ChildEventListener() {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(!alreadyFollow.contains(dataSnapshot.getKey())) {
+                    System.out.println("Following follows to : " + dataSnapshot.getKey());
+                    suggestedID.add(dataSnapshot.getKey());
+                }
+            }
+
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 

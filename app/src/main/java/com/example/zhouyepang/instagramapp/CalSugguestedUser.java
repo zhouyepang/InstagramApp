@@ -25,12 +25,12 @@ public class CalSugguestedUser {
     private  DatabaseReference userFollowing;
     private FirebaseUser currentUser;
     String currentUserID;
-    private ArrayList<String> followingID;
+    private ArrayList<String> suggestedID;
 
     public CalSugguestedUser(){
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         currentUserID =  currentUser.getUid();
-        followingID = new ArrayList<String>();
+        suggestedID = new ArrayList<String>();
         Log.v("suggest user ", currentUserID);
         System.out.println("current user id : "+ currentUserID);
         userFollowing = FirebaseDatabase.getInstance().getReference().child("following").child(currentUserID).child("followTo");
@@ -67,7 +67,10 @@ public class CalSugguestedUser {
         userFollowing = FirebaseDatabase.getInstance().getReference().child("following").child(currentUserID).child("followTo");
         userFollowing .addChildEventListener(new ChildEventListener() {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                System.out.println("Following follows to : "+dataSnapshot.getKey());
+                if(!suggestedID.contains(dataSnapshot.getKey())) {
+                    System.out.println("Following follows to : " + dataSnapshot.getKey());
+                    suggestedID.add(dataSnapshot.getKey());
+                }
             }
 
             @Override
@@ -91,5 +94,8 @@ public class CalSugguestedUser {
             }
 
         });
+    }
+    public ArrayList<String> getSuggestedUserList(){
+        return suggestedID;
     }
 }
