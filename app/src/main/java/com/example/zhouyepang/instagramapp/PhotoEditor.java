@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import android.content.Context;
 import java.io.IOException;
+import android.os.Environment;
+import java.util.UUID;
 
 public class PhotoEditor extends AppCompatActivity {
     Bitmap bitmapImage;
@@ -163,7 +165,6 @@ public class PhotoEditor extends AppCompatActivity {
         crop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("cropped image");
                 Bitmap tempImage = croppedView.getCroppedBitmap();
                 finalImage = tempImage;
                 croppedView.setImageBitmap(finalImage);
@@ -172,29 +173,26 @@ public class PhotoEditor extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("hi!!!!");
                 saveTheImage(v);
             }
         });
     }
 
     public void saveTheImage(View v){
-        System.out.println("hi!!!!");
-        Log.v("hi","save clicked ");
-        String path = saveToInternalStorage(finalImage);
+        Uri new_uri = saveToInternalStorage(finalImage);
         Intent uploadOptions = new Intent(this, UploadOptions.class);
-        uploadOptions.putExtra("imageUri", path);
-        startActivity(uploadOptions);
+        uploadOptions.putExtra("imageUri", new_uri.toString());
+        setResult(0, uploadOptions);
+        PhotoEditor.this.finish();
     }
 
-    private String saveToInternalStorage(Bitmap bitmapImage){
-        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+    private Uri saveToInternalStorage(Bitmap bitmapImage){
         // path to /data/data/yourapp/app_data/imageDir
-        File directory = contextWrapper.getDir("imageDir", Context.MODE_PRIVATE);
-        File mypath=new File(directory,"edited.jpg");
+        File edittedFile =new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+ UUID.randomUUID()+".jpg");
+        System.out.println("saved path "+edittedFile.toString());
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(mypath);
+            fos = new FileOutputStream(edittedFile);
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,7 +203,13 @@ public class PhotoEditor extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        return mypath.toString();
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri uri = Uri.fromFile(edittedFile);
+        intent.setData(uri);
+        this.sendBroadcast(intent);
+        uri = SendData.getImageContentUri(this, edittedFile);
+        System.out.println("transferred uri  "+uri);
+        return uri;
     }
 
     public static Bitmap origin (Bitmap Original){

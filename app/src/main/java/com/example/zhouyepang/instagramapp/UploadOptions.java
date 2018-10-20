@@ -34,7 +34,6 @@ public class UploadOptions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_options);
-
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
         if (fbUser == null) {
             finish();
@@ -68,6 +67,7 @@ public class UploadOptions extends AppCompatActivity {
     private void initialingImage() {
         Intent intent = getIntent();
         imageUri = Uri.parse(intent.getStringExtra("imageUri"));
+        System.out.println("img uri : "+imageUri);
         editedPreview = (ImageView) findViewById(R.id.editedPreview);
         editedPreview.setImageURI(imageUri);
     }
@@ -79,10 +79,17 @@ public class UploadOptions extends AppCompatActivity {
 
     private void editing(){
         Intent editorIntent = new Intent(this, PhotoEditor.class);
-        System.out.println("uri : "+imageUri.toString());
         editorIntent.putExtra("imageUri", imageUri.toString());
-        startActivity(editorIntent);
+        startActivityForResult(editorIntent, 0);
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Bundle bundle = data.getExtras();
+        Uri uri =  Uri.parse(bundle.getString("imageUri"));
+        imageUri = uri;
+        editedPreview.setImageURI(imageUri);
+    }
+
 
     private void returnToMain() {
         Intent intent = new Intent(this, MainPage.class);
