@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
@@ -61,6 +62,7 @@ public class TakePhoto  extends Fragment {
     private CameraDevice cameraDevice;
     private Button btnShot;
     private ImageButton btnConfirm;
+    private ImageButton btnCancel;
     private Handler childHandler;
     private Handler mainHandler;
     private ImageReader imageReader;
@@ -97,6 +99,7 @@ public class TakePhoto  extends Fragment {
         surfaceHolder.setKeepScreenOn(true);
         btnShot = thisView.findViewById(R.id.shot);
         btnConfirm = thisView.findViewById(R.id.confirm);
+        btnCancel = thisView.findViewById(R.id.cancel);
         swiFlash = thisView.findViewById(R.id.FlashLight);
         gridOverlay = thisView.findViewById(R.id.drawGridView);
         swiGrid = thisView.findViewById(R.id.grid);
@@ -149,8 +152,15 @@ public class TakePhoto  extends Fragment {
                 }
             }
         });
-
         btnConfirm.setEnabled(false);
+
+        btnCancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                takePreview();
+            }
+        });
+        btnCancel.setEnabled(false);
 
         swiFlash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -214,6 +224,7 @@ public class TakePhoto  extends Fragment {
                 buffer.get(bytes);
 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                bitmap = adjustPhotoRotation(bitmap,90);
 
                 if (bitmap != null) {
                     writeToFile(bitmap);
@@ -231,6 +242,7 @@ public class TakePhoto  extends Fragment {
                 image.close();
 
                 btnConfirm.setEnabled(true);
+                btnCancel.setEnabled(true);
             }
         }, mainHandler);
 
@@ -332,9 +344,22 @@ public class TakePhoto  extends Fragment {
             captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
             CaptureRequest mCaptureRequest = captureRequestBuilder.build();
             cameraCaptureSessions.capture(mCaptureRequest, null, childHandler);
+            cameraCaptureSessions.stopRepeating();
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
 
+    Bitmap adjustPhotoRotation(Bitmap bm, final int orientationDegree)
+    {
+        Matrix m = new Matrix();
+        m.setRotate(orientationDegree, (float) bm.getWidth() / 2, (float) bm.getHeight() / 2);
+
+        try {
+            Bitmap bm1 = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), m, true);
+            return bm1;
+        } catch (OutOfMemoryError ex) {
+        }
+        return null;
     }
 }
