@@ -85,4 +85,9 @@ public class Profile extends AppCompatActivity {
         Intent editIntent = new Intent(this, SetupActivity.class);
         startActivity(editIntent);
     }
+
+    public void myPhotos(View view) {
+        Intent myPhotosIntent = new Intent(this, MyPhotos.class);
+        startActivity(myPhotosIntent);
+    }
 }
