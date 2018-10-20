@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import java.sql.Timestamp;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -40,7 +41,7 @@ public class MainPage extends AppCompatActivity
     RecyclerView.LayoutManager mLayoutManager;
     ImageAdapter mAdapter;
     ArrayList<Image> images = new ArrayList<>();
-
+    Timestamp currStamp;
     DatabaseReference loginedUser;
     private String currentUserID;
 
@@ -50,7 +51,7 @@ public class MainPage extends AppCompatActivity
         setContentView(R.layout.activity_main_page);
 
         myAuth = FirebaseAuth.getInstance();
-
+        currStamp = new Timestamp(System.currentTimeMillis());
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

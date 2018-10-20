@@ -8,11 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import com.squareup.picasso.Picasso;
-import android.view.View;
 import android.view.View.OnClickListener;
 import android.content.Intent;
 import android.content.Context;
 import android.widget.ImageButton;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
     private ArrayList<Image> mDataset;
@@ -50,6 +54,16 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
+    public String convertStringToTimestamp(String date) {
+
+            SimpleDateFormat sf = new SimpleDateFormat( "yyyy-mm-dd HH:mm:ss");
+            Date dateFormat = new Date(Long.parseLong(date));
+            String convertedDate = sf.format(dateFormat).toString();
+            System.out.println("date:  "+sf.format(dateFormat));
+            System.out.println("converted date :  "+convertedDate);
+            return convertedDate;
+
+    }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
@@ -57,9 +71,18 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         final Image image = (Image) mDataset.get(position);
         if (image.user != null) {
             holder.mTextView.setText(image.user.displayName);
+            if (image.timeStamp!=null){
+                //Timestamp stamp = new Timestamp(System.currentTimeMillis());
+                System.out.println("time stamp : "+image.timeStamp);
+                if (convertStringToTimestamp(image.timeStamp)!=null) {
+                    String time = convertStringToTimestamp(image.timeStamp).toString();
+                    System.out.println("time "+time);
+                    String nameAndTimestap = image.user.displayName+" , posted at "+time;
+                    holder.mTextView.setText(nameAndTimestap);
+                }
+            }
         }
         Picasso.get().load(image.downloadUrl).into(holder.mImageView);
-
         holder.mLikeButton.setText("Like (" + image.likes + ")");
         if(image.hasLiked) {
             holder.mLikeButton.setBackgroundColor(mActivity.getResources().getColor(R.color.colorAccent));
@@ -73,11 +96,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             }
         });
         holder.mComment.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                openSinglePost(v, image);
-            }
-        });
-        holder.mImageView.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 openSinglePost(v, image);
             }
@@ -98,6 +116,18 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     public void addImage(Image image) {
         mDataset.add(0, image);
+        Collections.sort(mDataset, new dateComparator());
         notifyDataSetChanged();
+    }
+
+    private class dateComparator implements Comparator<Image>{
+        @Override
+        public int compare(Image m1, Image m2) {
+            if (m1.timeStamp != null && m1.timeStamp != null) {
+                return m1.timeStamp.compareTo(m2.timeStamp);
+            }else{
+                return 0;
+            }
+        }
     }
 }
