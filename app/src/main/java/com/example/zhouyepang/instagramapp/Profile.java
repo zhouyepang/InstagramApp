@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Iterator;
+
 
 public class Profile extends AppCompatActivity {
 
@@ -23,6 +25,7 @@ public class Profile extends AppCompatActivity {
     //private DatabaseReference following;
     DatabaseReference loginedUser;
     DatabaseReference loginedUser2;
+    DatabaseReference postsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class Profile extends AppCompatActivity {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUser.getUid());
         loginedUser2 = FirebaseDatabase.getInstance().getReference().child("follower").child(currentUser.getUid());
+        postsRef = FirebaseDatabase.getInstance().getReference().child("posts");
 
         loginedUser.addValueEventListener(new ValueEventListener() {
             @Override
@@ -70,6 +74,33 @@ public class Profile extends AppCompatActivity {
                     followers.setText("Follower:"+ b);
 
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        postsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                int i=0;
+                String loginedUid = currentUser.getUid().toString();
+
+                if (dataSnapshot.getValue() == null) {
+                    posts.setText("Posts:"+ i);
+                }
+
+                for (DataSnapshot snapShot : dataSnapshot.getChildren()) {
+                    if (loginedUid.equals(snapShot.child("userId").getValue().toString())) {
+                        i++;
+                    }
+                }
+                posts.setText("Posts:"+ i);
+
+
             }
 
             @Override
