@@ -1,5 +1,6 @@
 package com.example.zhouyepang.instagramapp;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,10 +10,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.Image;
 import android.media.ImageReader;
@@ -61,6 +64,7 @@ public class TakePhoto  extends Fragment {
     private CameraDevice cameraDevice;
     private Button btnShot;
     private ImageButton btnConfirm;
+    private ImageButton btnCancel;
     private Handler childHandler;
     private Handler mainHandler;
     private ImageReader imageReader;
@@ -92,11 +96,12 @@ public class TakePhoto  extends Fragment {
         final View thisView = inflater.inflate(R.layout.camera, container, false);
 
         surfaceView = thisView.findViewById(R.id.surfaceView);
-
+        flashOption = 0;
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.setKeepScreenOn(true);
         btnShot = thisView.findViewById(R.id.shot);
         btnConfirm = thisView.findViewById(R.id.confirm);
+        btnCancel = thisView.findViewById(R.id.cancel);
         swiFlash = thisView.findViewById(R.id.FlashLight);
         gridOverlay = thisView.findViewById(R.id.drawGridView);
         swiGrid = thisView.findViewById(R.id.grid);
@@ -149,16 +154,23 @@ public class TakePhoto  extends Fragment {
                 }
             }
         });
-
         btnConfirm.setEnabled(false);
+
+        btnCancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                takePreview();
+            }
+        });
+        btnCancel.setEnabled(false);
 
         swiFlash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    flashOption = 0;
-                } else {
                     flashOption = 1;
+                } else {
+                    flashOption = 0;
                 }
             }
         });
@@ -231,6 +243,7 @@ public class TakePhoto  extends Fragment {
                 image.close();
 
                 btnConfirm.setEnabled(true);
+                btnCancel.setEnabled(true);
             }
         }, mainHandler);
 
@@ -279,11 +292,7 @@ public class TakePhoto  extends Fragment {
                     cameraCaptureSessions = cameraCaptureSession;
                     try {
                         previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-                        if (flashOption == 0){
-                            previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
-                        } else {
-                            previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_TORCH);
-                        }
+                        previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
                         previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
                         CaptureRequest previewRequest = previewRequestBuilder.build();
                         cameraCaptureSessions.setRepeatingRequest(previewRequest, null, childHandler);
@@ -322,19 +331,36 @@ public class TakePhoto  extends Fragment {
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureRequestBuilder.addTarget(imageReader.getSurface());
             captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-            if (flashOption == 0){
-                captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
-                captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
-            } else {
-                captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
-            }
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
             int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
             captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
             CaptureRequest mCaptureRequest = captureRequestBuilder.build();
             cameraCaptureSessions.capture(mCaptureRequest, null, childHandler);
+            cameraCaptureSessions.stopRepeating();
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
 
+    @SuppressLint("NewApi")
+    public void setOpenFlash() {
+        previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);
+        previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH);
+        try {
+            cameraCaptureSessions.setRepeatingRequest(previewRequestBuilder.build(),null,childHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("NewApi")
+    public void setCloseFlash() {
+        previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_OFF);
+        previewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
+        try {
+            cameraCaptureSessions.setRepeatingRequest(previewRequestBuilder.build(),null,childHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
     }
 }
