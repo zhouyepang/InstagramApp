@@ -51,6 +51,7 @@ public class PhotoEditor extends AppCompatActivity {
         imageUri = Uri.parse(intent.getStringExtra("imageUri"));
         croppedView = (CropperView) findViewById(R.id.showImage);
         bitmapImage = uriToBitMap(imageUri);
+        finalImage = bitmapImage;
         preview1 = origin(bitmapImage);
         preview2 = warm(bitmapImage);
         preview3 = blackAndWhite(bitmapImage);
@@ -109,7 +110,7 @@ public class PhotoEditor extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finalImage = preview1;
+                finalImage =  origin(finalImage);
                 brightnessSeekbar.setProgress(0);
                 contrastBar.setProgress(100);
                 croppedView.setImageBitmap(finalImage);
@@ -119,8 +120,7 @@ public class PhotoEditor extends AppCompatActivity {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finalImage = bitmapImage;
-                finalImage = preview2;
+                finalImage = warm(finalImage);
                 brightnessSeekbar.setProgress(0);
                 contrastBar.setProgress(100);
                 croppedView.setImageBitmap(finalImage);
@@ -130,8 +130,7 @@ public class PhotoEditor extends AppCompatActivity {
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finalImage = bitmapImage;
-                finalImage = preview3;
+                finalImage = blackAndWhite(finalImage);
                 brightnessSeekbar.setProgress(0);
                 contrastBar.setProgress(100);
                 croppedView.setImageBitmap(finalImage);
@@ -142,8 +141,7 @@ public class PhotoEditor extends AppCompatActivity {
         b4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finalImage = bitmapImage;
-                finalImage = preview4;
+                finalImage = invertColor(finalImage);
                 brightnessSeekbar.setProgress(0);
                 contrastBar.setProgress(100);
                 croppedView.setImageBitmap(finalImage);

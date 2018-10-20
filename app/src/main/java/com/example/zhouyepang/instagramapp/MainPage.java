@@ -35,10 +35,7 @@ public class MainPage extends AppCompatActivity
     public boolean isLogin = false;
     public String currUserName;
     public User user;
-
     private FirebaseAuth myAuth;
-
-    // Jason
     RecyclerView recyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     ImageAdapter mAdapter;
@@ -66,18 +63,13 @@ public class MainPage extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
         // Setup the RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new ImageAdapter(images, this);
         recyclerView.setAdapter(mAdapter);
-
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        Log.d("MyApp","I am here");
 
         // Get the latest 100 images
         Query imagesQuery = MainActivity.database.child("images").child("postImages").orderByKey().limitToFirst(100);
@@ -104,7 +96,6 @@ public class MainPage extends AppCompatActivity
                 });
 
                 //mAdapter.addImage(image);
-
                 // get image likes
                 Query likesQuery = MainActivity.database.child("likes").orderByChild("imageId").equalTo(image.key);
                 likesQuery.addChildEventListener(new ChildEventListener() {
@@ -134,12 +125,10 @@ public class MainPage extends AppCompatActivity
                         }
                         mAdapter.notifyDataSetChanged();
                     }
-
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -148,19 +137,11 @@ public class MainPage extends AppCompatActivity
 
 
                 loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUserID);
-
-
                 loginedUser.addChildEventListener(new ChildEventListener() {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
                         if(dataSnapshot.hasChild(image.userId)){
-
                             mAdapter.addImage(image);
-
                         }
-
-
-
                     }
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -184,10 +165,6 @@ public class MainPage extends AppCompatActivity
 
                 });
 
-
-
-
-                Log.d("haha", ""+ image.key);
             }
 
             @Override
@@ -239,6 +216,10 @@ public class MainPage extends AppCompatActivity
                 currUserName = this.user.getDisplayName();
                 TextView text = findViewById(R.id.userNameDisplay);
                 this.isLogin = true;
+                TextView userNameView = findViewById(R.id.userNameDisplay);
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+                String userName = MainActivity.lookUpUserID.lookUpUserNamebyId(userId);
+                userNameView.setText(userName);
             } else {
                 // Sign in failed, check response for error code
                 if (response != null) {
@@ -285,18 +266,7 @@ public class MainPage extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.following) {
-            // Handle the camera action
-        } else if (id == R.id.followers) {
-
-        } else if (id == R.id.bluetooth) {
-            bluetooth();
-        } else if (id == R.id.photoEditor) {
-
-        } else if (id == R.id.login) {
-            signIn();
-        } else if (id == R.id.logout) {
+        if (id == R.id.logout) {
             myAuth.signOut();
             sendUsertoLoginActivity();
 
@@ -333,7 +303,6 @@ public class MainPage extends AppCompatActivity
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
         finish();
-
     }
 
     public void setLiked(Image image) {
