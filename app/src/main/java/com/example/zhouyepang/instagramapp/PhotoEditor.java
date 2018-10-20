@@ -21,6 +21,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import java.io.FileNotFoundException;
 import com.fenchtose.nocropper.CropperView;
+import java.io.ByteArrayOutputStream;
+import android.content.ContextWrapper;
+import java.io.File;
+import java.io.FileOutputStream;
+import android.content.Context;
+import java.io.IOException;
 
 public class PhotoEditor extends AppCompatActivity {
     Bitmap bitmapImage;
@@ -41,7 +47,6 @@ public class PhotoEditor extends AppCompatActivity {
 
         Intent intent = getIntent();
         imageUri = Uri.parse(intent.getStringExtra("imageUri"));
-
         croppedView = (CropperView) findViewById(R.id.showImage);
         bitmapImage = uriToBitMap(imageUri);
         preview1 = origin(bitmapImage);
@@ -55,6 +60,7 @@ public class PhotoEditor extends AppCompatActivity {
         ImageButton b4 = (ImageButton) findViewById(R.id.effect4);
         ImageButton snap = (ImageButton) findViewById(R.id.snap);
         ImageButton crop = (ImageButton) findViewById(R.id.cropImage);
+        ImageButton saveButton =  (ImageButton) findViewById(R.id.saveImage);
         b1.setImageBitmap(preview1);
         b2.setImageBitmap(preview2);
         b3.setImageBitmap(preview3);
@@ -163,6 +169,43 @@ public class PhotoEditor extends AppCompatActivity {
                 croppedView.setImageBitmap(finalImage);
             }
         });
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("hi!!!!");
+                saveTheImage(v);
+            }
+        });
+    }
+
+    public void saveTheImage(View v){
+        System.out.println("hi!!!!");
+        Log.v("hi","save clicked ");
+        String path = saveToInternalStorage(finalImage);
+        Intent uploadOptions = new Intent(this, UploadOptions.class);
+        uploadOptions.putExtra("imageUri", path);
+        startActivity(uploadOptions);
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage){
+        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = contextWrapper.getDir("imageDir", Context.MODE_PRIVATE);
+        File mypath=new File(directory,"edited.jpg");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return mypath.toString();
     }
 
     public static Bitmap origin (Bitmap Original){
@@ -270,4 +313,5 @@ public class PhotoEditor extends AppCompatActivity {
         }
         return bit;
     }
+
 }

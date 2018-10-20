@@ -18,7 +18,7 @@ public class Discover extends AppCompatActivity {
     DatabaseReference users;
     ArrayList<String> userName;
     List<String> suggestedNames = new ArrayList<String>();
-
+    ImageButton searchPageButton;
     List<String> ids = new ArrayList<String>();
 
     //SuggestUserDisplay adapter2;
@@ -31,12 +31,14 @@ public class Discover extends AppCompatActivity {
         suggestedNames = new ArrayList<String>();
         ids = new ArrayList<String>();
         users = MainActivity.database.child("users");
-
-
-
+        searchPageButton = findViewById(R.id.searchPageButton);
         enableToolBar();
-
-
+        searchPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSearchPage(v);
+            }
+        });
         users.addChildEventListener(new ChildEventListener() {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
@@ -139,5 +141,8 @@ public class Discover extends AppCompatActivity {
         userNamesView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
+    public void openSearchPage(View view){
+        Intent searchPage = new Intent(this,  SearchUser.class);
+        startActivity(searchPage);
+    }
 }

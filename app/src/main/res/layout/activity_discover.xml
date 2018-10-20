@@ -30,7 +30,6 @@
         android:layout_height="58dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:onClick="openSearchPage"
         app:srcCompat="@drawable/ic_search_black_24dp" />
 
 

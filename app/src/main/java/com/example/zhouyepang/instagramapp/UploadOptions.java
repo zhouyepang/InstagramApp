@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 
 public class UploadOptions extends AppCompatActivity {
     private Uri imageUri;
+    private Bitmap edittedImg;
     private ImageView editedPreview;
     private Button btnEditor, btnPost;
     private EditText description;
@@ -78,6 +79,7 @@ public class UploadOptions extends AppCompatActivity {
 
     private void editing(){
         Intent editorIntent = new Intent(this, PhotoEditor.class);
+        System.out.println("uri : "+imageUri.toString());
         editorIntent.putExtra("imageUri", imageUri.toString());
         startActivity(editorIntent);
     }
