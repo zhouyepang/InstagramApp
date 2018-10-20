@@ -86,50 +86,62 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
             loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUser.getUid());
 
 
+            if(currID.equals(currentUser.getUid().toString())){
+                addButton.setVisibility(View.INVISIBLE);
+            } else if(addButton.getText().toString().isEmpty()) {
+
+                addButton.setVisibility(View.VISIBLE);
+                addButton.setText("ADD");
+
+            } else {
+                addButton.setVisibility(View.VISIBLE);
+            }
+
+                // 可能造成运行速度变慢的原因
+                loginedUser.addChildEventListener(new ChildEventListener() {
 
 
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                        if (dataSnapshot.hasChild(currID)) {
+
+                            //addButton.setText("ADDED");
+                            addButton.setVisibility(View.VISIBLE);
+                            addButton.setText("ADDED");
+
+                        } else if (currID.equals(currentUser.getUid().toString())) {
+                            addButton.setVisibility(View.INVISIBLE);
+                        } else {
+                            //addButton.setText("ADD");
+                            addButton.setVisibility(View.VISIBLE);
+                            addButton.setText("ADD");
+                        }
 
 
-            // 可能造成运行速度变慢的原因
-            loginedUser.addChildEventListener(new ChildEventListener() {
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                    if(dataSnapshot.hasChild(currID)){
-
-                        addButton.setText("ADDED");
-                        addButton.setVisibility(View.VISIBLE);
-
-                    } else if(currID.equals(currentUser.getUid().toString())){
-                        addButton.setVisibility(View.INVISIBLE);
-                    } else {
-                        addButton.setText("ADD");
-                        addButton.setVisibility(View.VISIBLE);
                     }
 
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+                    }
 
-                }
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                }
+                    }
 
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                }
+                    }
 
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
+                    }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                });
 
-                }
-
-            });
 
             /*if(currID == currentUser.getUid()) {
                 addButton.setText("ME");

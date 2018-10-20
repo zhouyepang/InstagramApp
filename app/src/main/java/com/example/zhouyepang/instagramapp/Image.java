@@ -32,4 +32,12 @@ public class Image {
         this.imageType = imageType;
     }
 
+    public void addLike() {
+        this.likes++;
+    }
+
+    public void removeLike() {
+        this.likes--;
+    }
+
 }

@@ -105,6 +105,48 @@ public class MainPage extends AppCompatActivity
 
                 //mAdapter.addImage(image);
 
+                // get image likes
+                Query likesQuery = MainActivity.database.child("likes").orderByChild("imageId").equalTo(image.key);
+                likesQuery.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Like like = dataSnapshot.getValue(Like.class);
+                        image.addLike();
+                        if(like.userId.equals(currentUserID)) {
+                            image.hasLiked = true;
+                            image.userLike = dataSnapshot.getKey();
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        Like like = dataSnapshot.getValue(Like.class);
+                        image.removeLike();
+                        if(like.userId.equals(currentUserID)) {
+                            image.hasLiked = false;
+                            image.userLike = null;
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
                 loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUserID);
 
 
@@ -141,6 +183,8 @@ public class MainPage extends AppCompatActivity
                     }
 
                 });
+
+
 
 
                 Log.d("haha", ""+ image.key);
@@ -292,5 +336,22 @@ public class MainPage extends AppCompatActivity
         startActivity(loginIntent);
         finish();
 
+    }
+
+    public void setLiked(Image image) {
+        if(!image.hasLiked) {
+            // add new Like
+            image.hasLiked = true;
+            Like like = new Like(image.key, currentUserID);
+            String key = MainActivity.database.child("likes").push().getKey();
+            MainActivity.database.child("likes").child(key).setValue(like);
+            image.userLike = key;
+        } else {
+            // remove Like
+            image.hasLiked = false;
+            if (image.userLike != null) {
+                MainActivity.database.child("likes").child(image.userLike).removeValue();
+            }
+        }
     }
 }
