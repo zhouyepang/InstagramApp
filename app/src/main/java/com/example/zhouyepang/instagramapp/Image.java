@@ -9,6 +9,7 @@ public class Image {
     public String userId;
     public String downloadUrl;
     public String imageType;
+    public String timeStamp;
 
     @Exclude
     public User user;
@@ -25,11 +26,12 @@ public class Image {
     public Image() {
     }
 
-    public Image(String key, String userId, String downloadUrl, String imageType) {
+    public Image(String key, String userId, String downloadUrl, String imageType, String timeStamp) {
         this.key = key;
         this.userId = userId;
         this.downloadUrl = downloadUrl;
         this.imageType = imageType;
+        this.timeStamp = timeStamp;
     }
 
     public void addLike() {

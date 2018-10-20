@@ -8,6 +8,7 @@ public class Post {
     public String imageId;
     public String downloadUrl;
     public String description;
+    public String timeStamp;
 
 
     @Exclude
@@ -25,12 +26,13 @@ public class Post {
     public Post() {
     }
 
-    public Post(String key, String userId, String imageId, String downloadUrl, String description) {
+    public Post(String key, String userId, String imageId, String downloadUrl, String description, String timeStamp) {
         this.key = key;
         this.userId = userId;
         this.imageId = imageId;
         this.downloadUrl = downloadUrl;
         this.description = description;
+        this.timeStamp = timeStamp;
     }
 
     public void addLike() {

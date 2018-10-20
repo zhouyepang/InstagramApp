@@ -1,5 +1,6 @@
 package com.example.zhouyepang.instagramapp;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -19,8 +20,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class SendData {
 
@@ -68,9 +72,9 @@ public class SendData {
     private static void postToDB(final Context context, final FirebaseUser fbUser, Uri imageUri, final DatabaseReference database, boolean imageType, final String databaseCategory, Uri downloadUrl, String inputText){
         String imagekey = database.child("images").child(databaseCategory).push().getKey();
         String postkey = database.child("posts").push().getKey();
-
-        com.example.zhouyepang.instagramapp.Image image = new com.example.zhouyepang.instagramapp.Image(imagekey, fbUser.getUid(), downloadUrl.toString(), databaseCategory);
-        com.example.zhouyepang.instagramapp.Post post = new com.example.zhouyepang.instagramapp.Post(postkey, fbUser.getUid(), imagekey, downloadUrl.toString(), inputText);
+        String postTime = getTimeStamp();
+        com.example.zhouyepang.instagramapp.Image image = new com.example.zhouyepang.instagramapp.Image(imagekey, fbUser.getUid(), downloadUrl.toString(), databaseCategory, postTime);
+        com.example.zhouyepang.instagramapp.Post post = new com.example.zhouyepang.instagramapp.Post(postkey, fbUser.getUid(), imagekey, downloadUrl.toString(), inputText, postTime);
 
         database.child("images").child(databaseCategory).child(imagekey).setValue(image);
         database.child("posts").child(postkey).setValue(post);
@@ -78,7 +82,8 @@ public class SendData {
 
     private static void avatarToDB(final Context context, final FirebaseUser fbUser, Uri imageUri, final DatabaseReference database, boolean imageType, final String databaseCategory, Uri downloadUrl) {
         String key = database.child("images").child(databaseCategory).push().getKey();
-        com.example.zhouyepang.instagramapp.Image image = new com.example.zhouyepang.instagramapp.Image(key, fbUser.getUid(), downloadUrl.toString(), databaseCategory);
+        String avaTime = getTimeStamp();
+        com.example.zhouyepang.instagramapp.Image image = new com.example.zhouyepang.instagramapp.Image(key, fbUser.getUid(), downloadUrl.toString(), databaseCategory, avaTime);
         database.child("images").child(databaseCategory).child(key).setValue(image);
     }
 
@@ -100,6 +105,25 @@ public class SendData {
                 return null;
             }
         }
+    }
+
+    public static String getTimeStamp() {
+        Long ts = System.currentTimeMillis();
+        return ts.toString();
+    }
+
+    public static String timeStampToDateTime(String timeStamp) {
+        Long ts = Long.parseLong(timeStamp);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ts);
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int mMin = calendar.get(Calendar.MINUTE);
+        int mSec = calendar.get(Calendar.SECOND);
+        @SuppressLint("DefaultLocale") String dateTime = String.format("%d-%d-%d %d:%d:%d", mYear, mMonth, mDay, mHour, mMin, mSec);
+        return dateTime;
     }
 }
 
