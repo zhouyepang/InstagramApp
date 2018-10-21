@@ -16,7 +16,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
-
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,9 +33,7 @@ public class MainActivity extends AppCompatActivity {
         //Intent intent = new Intent(this, MainPage.class);
         //startActivity(intent);
         setContentView(R.layout.activity_main);
-
         database = FirebaseDatabase.getInstance().getReference();
-
         FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
         if(fbUser != null) {
             // User already signed in
@@ -94,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }*/
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

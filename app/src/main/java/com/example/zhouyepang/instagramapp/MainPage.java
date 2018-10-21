@@ -29,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import com.google.firebase.database.ChildEventListener;
 
 public class MainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -188,6 +189,7 @@ public class MainPage extends AppCompatActivity
 
             }
         });
+        userList();
     }
 
     // Using AuthUI to implement Firebase Login
@@ -198,6 +200,37 @@ public class MainPage extends AppCompatActivity
                 AuthUI.getInstance().createSignInIntentBuilder().setTheme(R.style.FirebaseLoginTheme).build(),
                 MainActivity.RC_SIGN_IN);
     }
+
+    public void userList() {
+        DatabaseReference userId = MainActivity.database.child("users");
+        userId.addChildEventListener(new ChildEventListener() {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                user = dataSnapshot.getValue(User.class);
+                MainActivity.lookUpUserID.updateUserLists(user);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

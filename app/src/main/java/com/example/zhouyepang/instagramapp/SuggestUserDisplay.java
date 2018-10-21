@@ -22,10 +22,6 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
         public TextView userNameText;
         public Button addFriend;
 
-
-
-
-
         public ViewHolder(View v) {
             super(v);
             userNameText = v.findViewById(R.id.user_name);
@@ -47,7 +43,6 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
             this.userInfo = userInfo;
             this.ids = ids;
             //mContext = context;
-
             currentUser = FirebaseAuth.getInstance().getCurrentUser();
         }
 
@@ -64,10 +59,9 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
             final String currID = ids.get(position);
             String currentUserName =  MainActivity.lookUpUserID.lookUpUserNamebyId(currID);
             TextView usernameView = viewHolder.userNameText;
+            System.out.println(currentUserName);
             usernameView.setText(currentUserName);
             final Button addButton = viewHolder.addFriend;
-
-
 
             loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUser.getUid());
 
@@ -192,14 +186,12 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
             following2 = FirebaseDatabase.getInstance().getReference().child("follower").child(currID);
             following2.child("whoFollowsMe").child(uid).setValue(uid);
 
-
-
         }
 
 
 
         public int getItemCount() {
-            return userInfo.size();
+            return ids.size();
         }
 
 
