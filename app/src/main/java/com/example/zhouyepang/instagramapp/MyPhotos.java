@@ -24,7 +24,6 @@ public class MyPhotos extends AppCompatActivity {
 
 
     public User user;
-
     private FirebaseAuth myAuth;
     private String currentUserID;
 
@@ -114,9 +113,4 @@ public class MyPhotos extends AppCompatActivity {
         });
     }
 
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_photos);
-    } */
 }

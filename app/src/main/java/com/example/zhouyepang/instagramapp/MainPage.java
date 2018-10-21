@@ -31,6 +31,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import com.google.firebase.database.ChildEventListener;
 
+/**
+ * Home page activity
+ * Displays the following users posts
+ * Tool bar to other activity
+ */
 public class MainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

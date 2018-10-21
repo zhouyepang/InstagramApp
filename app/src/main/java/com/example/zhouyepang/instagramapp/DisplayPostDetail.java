@@ -18,7 +18,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.LinearLayoutManager;
 import java.lang.reflect.Array;
 
-
+/**
+ * Display who likes the post
+ * who comment the post
+ * and allow user to leave their comment
+ */
 public class DisplayPostDetail extends AppCompatActivity {
     private String imageId;
     private String currentUserId;
@@ -71,6 +75,7 @@ public class DisplayPostDetail extends AppCompatActivity {
         });
         displayUserLiked();
     }
+    // set the comments from the database
     public void setComment(View view){
         EditText enteredContent = (EditText) findViewById(R.id.commentContent);
         content = enteredContent.getText().toString();
@@ -78,7 +83,7 @@ public class DisplayPostDetail extends AppCompatActivity {
         String key = MainActivity.database.child("comments").push().getKey();
         MainActivity.database.child("comments").child(key).setValue(newComment);
     }
-
+    // display the comments
     public void displayComments (ArrayList<Comment> commentContents){
         RecyclerView commentView = (RecyclerView) findViewById(R.id.commentSection);
         CommentAdapter adapter = new CommentAdapter(commentContents);
@@ -86,6 +91,7 @@ public class DisplayPostDetail extends AppCompatActivity {
         commentView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    // display which user likes the post
     public void displayUserLiked(){
         DatabaseReference userLikes = MainActivity.database.child("likes");
         userLikes.addChildEventListener(new ChildEventListener() {

@@ -77,49 +77,30 @@ public class SetupActivity extends AppCompatActivity {
         currentUserID = myAuth.getCurrentUser().getUid();
         usersRef = FirebaseDatabase.getInstance().getReference().child("usersProfile").child(currentUserID);
         userRrofileImageRef = FirebaseStorage.getInstance().getReference().child("profile Images");
-
-
         displayName = myAuth.getCurrentUser().getDisplayName();
-
         userName = (EditText) findViewById(R.id.setup_username);
         fullName = (EditText) findViewById(R.id.setup_full_name);
         fullName.setText(displayName);
         countryName = (EditText) findViewById(R.id.setup_country_name);
         saveInforButton = (Button) findViewById(R.id.setup_information_button);
         profileImage = (CircleImageView) findViewById(R.id.setup_profile_image);
-
         saveInforButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveAccountSetupInfor();
             }
         });
+<<<<<<< HEAD
 
         //select photo by gallery
+=======
+>>>>>>> 51e6641125a2f10b41e47a0e6ea8a6862b4ea2e4
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openGallery(view);
             }
         });
-
-        /*usersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if(dataSnapshot.exists()) {
-                    String image = dataSnapshot.child("profileimage").getValue().toString();
-
-                    Picasso.get().load(image).placeholder(R.drawable.ic_account_circle_black_24dp).into(profileImage);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });  */
 
     }
 
@@ -143,6 +124,7 @@ public class SetupActivity extends AppCompatActivity {
             profileImage.setImageURI(imageUri);
         }
     }
+<<<<<<< HEAD
 
     // method for this fragment to request and get permission for opening gallery from user
     @Override
@@ -219,6 +201,8 @@ public class SetupActivity extends AppCompatActivity {
         }
     }
 */
+=======
+>>>>>>> 51e6641125a2f10b41e47a0e6ea8a6862b4ea2e4
     private void saveAccountSetupInfor() {
 
         String username = userName.getText().toString();
@@ -251,19 +235,6 @@ public class SetupActivity extends AppCompatActivity {
                             .setDisplayName(fullName.getText().toString()).build();
                     currentUser.updateProfile(profileUpdates);
                 }
-
-               /* myAuth.addAuthStateListener (new FirebaseAuth.AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if(user!=null){
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(fullName.getText().toString()).build();
-                            user.updateProfile(profileUpdates);
-
-                        }
-                    }
-                }); */
                 sendUserToProfilePage();
                 Toast.makeText(this,"Your profile is updated successfully!",Toast.LENGTH_SHORT).show();
 
@@ -274,14 +245,6 @@ public class SetupActivity extends AppCompatActivity {
                 Log.d("Error","Fail to update profile");
 
             }
-
-            //updateInfo(fullname, username, country)
-
-            //usersRef.child("displayName").setValue(fullname);
-            //usersRef.child("username").setValue(username);
-            //usersRef.child("country").setValue(country);
-
-            //Toast.makeText(this,"Your profile is updated successfully!",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -296,14 +259,6 @@ public class SetupActivity extends AppCompatActivity {
         usersRef.child("displayName").setValue(a);
         usersRef.child("username").setValue(b);
         usersRef.child("country").setValue(c);
-
-        /*StorageReference filePath = userRrofileImageRef.child(currentUserID + ".jpg");
-        filePath.putFile(imageUri);
-
-        if (imageUri != null) {
-            usersRef.child("profileimage").setValue(imageUri);
-        } */
-
         FirebaseDatabase.getInstance().getReference().child("users").child(currentUserID).child("displayName").setValue(a);
         uploadAva();
     }
