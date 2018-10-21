@@ -168,9 +168,9 @@ public class TakePhoto  extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    flashOption = 1;
+                    setOpenFlash();
                 } else {
-                    flashOption = 0;
+                    setCloseFlash();
                 }
             }
         });
