@@ -73,17 +73,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             holder.mTextView.setText(image.user.displayName);
             if (image.timeStamp!=null){
                 //Timestamp stamp = new Timestamp(System.currentTimeMillis());
-                System.out.println("-----------------");
-                System.out.println("image Id "+image.key);
-                System.out.println("time stamp : "+image.timeStamp);
                 if (convertStringToTimestamp(image.timeStamp)!=null) {
-                    String time = convertStringToTimestamp(image.timeStamp).toString();
-                    System.out.println("time "+time);
+                    String time = SendData.timeStampToDateTime(image.timeStamp);
                     String nameAndTimestap = image.user.displayName+" , posted at "+time;
                     holder.mTextView.setText(nameAndTimestap);
                 }
             }
-            System.out.println("-----------------");
         }
         Picasso.get().load(image.downloadUrl).into(holder.mImageView);
         holder.mLikeButton.setText("Like (" + image.likes + ")");
