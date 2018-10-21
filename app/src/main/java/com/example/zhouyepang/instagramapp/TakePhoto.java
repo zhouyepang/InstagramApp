@@ -59,6 +59,7 @@ import java.util.UUID;
 
 
 public class TakePhoto  extends Fragment {
+    //initial values
     private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
     private CameraDevice cameraDevice;
@@ -78,6 +79,7 @@ public class TakePhoto  extends Fragment {
     private Switch swiGrid;
     Uri imageUri;
 
+    //setting orientations for camera using in different camera gravy state
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
     static {
@@ -106,9 +108,11 @@ public class TakePhoto  extends Fragment {
         gridOverlay = thisView.findViewById(R.id.drawGridView);
         swiGrid = thisView.findViewById(R.id.grid);
 
+        //initial surface view to adapt camera2 preview by adding call back
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
+            // request camera permission
             public void surfaceCreated(SurfaceHolder holder) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (getActivity().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -129,6 +133,7 @@ public class TakePhoto  extends Fragment {
 
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
+            //release camera resource
             public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
                 if (null != cameraDevice) {
                     cameraDevice.close();
@@ -137,6 +142,7 @@ public class TakePhoto  extends Fragment {
             }
         });
 
+        //control capture funtion
         btnShot.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -144,6 +150,7 @@ public class TakePhoto  extends Fragment {
             }
         });
 
+        //control next step for intent with captured photo
         btnConfirm.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -156,6 +163,7 @@ public class TakePhoto  extends Fragment {
         });
         btnConfirm.setEnabled(false);
 
+        //control reset camera2 preview
         btnCancel.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -164,6 +172,7 @@ public class TakePhoto  extends Fragment {
         });
         btnCancel.setEnabled(false);
 
+        //control flash light
         swiFlash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -179,6 +188,7 @@ public class TakePhoto  extends Fragment {
 
         gridOverlay.bringToFront();
 
+        //control grid overlay
         swiGrid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -193,6 +203,7 @@ public class TakePhoto  extends Fragment {
         return thisView;
     }
 
+    //request permission for this fragment
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -222,6 +233,7 @@ public class TakePhoto  extends Fragment {
         imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
             @Override
             public void onImageAvailable(ImageReader reader) {
+                //once capture photo sucessfully, the thread will call back to here to start process the captured photo data
                 Image image = reader.acquireNextImage();
                 ByteBuffer buffer = image.getPlanes()[0].getBuffer();
                 byte[] bytes = new byte[buffer.remaining()];
@@ -229,6 +241,7 @@ public class TakePhoto  extends Fragment {
 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
+                //save to local storage
                 if (bitmap != null) {
                     writeToFile(bitmap);
                 }
@@ -244,6 +257,7 @@ public class TakePhoto  extends Fragment {
 
                 image.close();
 
+                //available to control cancel or next step button
                 btnConfirm.setEnabled(true);
                 btnCancel.setEnabled(true);
 
@@ -264,16 +278,19 @@ public class TakePhoto  extends Fragment {
         }
     }
 
+    //create the camera device listener
     private CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onOpened(CameraDevice camera) {
+            //start preview
             cameraDevice = camera;
             takePreview();
         }
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onDisconnected(CameraDevice camera) {
+            //close camera
             if (null != cameraDevice) {
                 cameraDevice.close();
                 cameraDevice = null;
@@ -287,18 +304,24 @@ public class TakePhoto  extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void takePreview() {
         try {
+            //create the capture builder for preview
             previewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            //add surface view as the capture builder target to show the preview
             previewRequestBuilder.addTarget(surfaceHolder.getSurface());
+            //create capture session to handle request of preview and capture photo
             cameraDevice.createCaptureSession(Arrays.asList(surfaceHolder.getSurface(), imageReader.getSurface()), new CameraCaptureSession.StateCallback(){
                 @Override
                 public void onConfigured(CameraCaptureSession cameraCaptureSession) {
                     if (null == cameraDevice) return;
+                    //start to preview
                     cameraCaptureSessions = cameraCaptureSession;
                     try {
+                        //set preview property and function
                         previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
                         previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_OFF);
                         previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
                         CaptureRequest previewRequest = previewRequestBuilder.build();
+                        //make the preview as repeat stream
                         cameraCaptureSessions.setRepeatingRequest(previewRequest, null, childHandler);
                     } catch (CameraAccessException e) {
                         e.printStackTrace();
@@ -325,6 +348,7 @@ public class TakePhoto  extends Fragment {
         }
     }
 
+    //capture photo function, it is similar to preview function except the capture builder is only create for current capture photo request
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void takePicture() {
         if (cameraDevice == null) {
@@ -338,14 +362,17 @@ public class TakePhoto  extends Fragment {
             int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
             captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
             CaptureRequest mCaptureRequest = captureRequestBuilder.build();
+            //capture photo
             cameraCaptureSessions.capture(mCaptureRequest, null, childHandler);
             swiFlash.setChecked(false);
+            //show captured photo as stopped preview
             cameraCaptureSessions.stopRepeating();
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
     }
 
+    //set flash option with reset preview
     @SuppressLint("NewApi")
     public void setOpenFlash() {
         previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);

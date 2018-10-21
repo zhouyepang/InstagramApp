@@ -64,6 +64,7 @@ public class Gallery extends Fragment {
         return v;
     }
 
+    // method for this fragment to request and get permission for opening gallery from user
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == RC_PERMISSION_READ_EXTERNAL_STORAGE) {
@@ -73,6 +74,7 @@ public class Gallery extends Fragment {
         }
     }
 
+    //open gallery method with check and request permission
     public void openGallery(View view) {
         if (ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, RC_PERMISSION_READ_EXTERNAL_STORAGE);
@@ -81,6 +83,7 @@ public class Gallery extends Fragment {
         }
     }
 
+    //intent to system gallery to choose photo
     private void choosePhoto(){
         Intent galleryIntent = new Intent();
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
@@ -88,6 +91,7 @@ public class Gallery extends Fragment {
         startActivityForResult(galleryIntent, RC_IMAGE_GALLERY);
     }
 
+    //get the choose result from system gallery with selected image URI
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -11,6 +11,7 @@ public class UploadPhotoPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
+    //target which fragment should include in activity of upload select
     @Override
     public Fragment getItem(int position) {
         if (position == 1) {

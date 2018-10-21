@@ -37,6 +37,7 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         enableToolBar();
 
+        //initial values
         following = (TextView) findViewById(R.id.following);
         followers = (TextView) findViewById(R.id.followers);
         posts = (TextView) findViewById(R.id.posts);
@@ -47,6 +48,7 @@ public class Profile extends AppCompatActivity {
         userRef = FirebaseDatabase.getInstance().getReference().child("usersProfile").child(currentUser.getUid());
         postsRef = FirebaseDatabase.getInstance().getReference().child("images").child("postImages");
 
+        //listening the data of database by current user's reference, once data of the reference has change value, it will check and retrieve here to update avatar image
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

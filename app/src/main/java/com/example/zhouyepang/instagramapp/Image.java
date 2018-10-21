@@ -5,6 +5,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class Image {
+    //initial values
     public String key;
     public String userId;
     public String downloadUrl;
@@ -26,6 +27,7 @@ public class Image {
     public Image() {
     }
 
+    //initial instance of image
     public Image(String key, String userId, String downloadUrl, String imageType, String timeStamp) {
         this.key = key;
         this.userId = userId;
@@ -34,10 +36,12 @@ public class Image {
         this.timeStamp = timeStamp;
     }
 
+    //add like for this image
     public void addLike() {
         this.likes++;
     }
 
+    //remove like for this image
     public void removeLike() {
         this.likes--;
     }

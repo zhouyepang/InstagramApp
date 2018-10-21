@@ -1,8 +1,12 @@
 package com.example.zhouyepang.instagramapp;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -38,8 +42,9 @@ public class SetupActivity extends AppCompatActivity {
     private CircleImageView profileImage;
     FirebaseUser fbUser;
     DatabaseReference database;
-
+    static final int RC_PERMISSION_READ_EXTERNAL_STORAGE = 1;
     static final int RC_IMAGE_GALLERY = 2;
+
 
     private FirebaseAuth myAuth;
     private DatabaseReference usersRef;
@@ -90,10 +95,11 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
+        //select photo by gallery
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                choosePhoto();
+                openGallery(view);
             }
         });
 
@@ -121,6 +127,7 @@ public class SetupActivity extends AppCompatActivity {
         com.example.zhouyepang.instagramapp.SendData.uploadImage(SetupActivity.this, fbUser, imageUri, database, "avatars", false, "");
     }
 
+    //intent to system gallery to choose photo
     private void choosePhoto(){
         Intent galleryIntent = new Intent();
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
@@ -134,6 +141,25 @@ public class SetupActivity extends AppCompatActivity {
         if(requestCode == RC_IMAGE_GALLERY && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
             profileImage.setImageURI(imageUri);
+        }
+    }
+
+    // method for this fragment to request and get permission for opening gallery from user
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == RC_PERMISSION_READ_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                choosePhoto();
+            }
+        }
+    }
+
+    //open gallery method with check and request permission
+    public void openGallery(View view) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, RC_PERMISSION_READ_EXTERNAL_STORAGE);
+        } else {
+            choosePhoto();
         }
     }
 /*
