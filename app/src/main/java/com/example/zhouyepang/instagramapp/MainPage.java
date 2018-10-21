@@ -294,7 +294,7 @@ public class MainPage extends AppCompatActivity
         Intent searchIntent = new Intent(this, Profile.class);
         startActivity(searchIntent);
     }
-    public void bluetooth() {
+    public void bluetooth(View view) {
         Intent bluetoothIntent = new Intent(this, Bluetooth.class);
         startActivity(bluetoothIntent);
     }
