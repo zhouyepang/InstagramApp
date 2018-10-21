@@ -32,6 +32,7 @@ import java.util.UUID;
 
 public class PhotoEditor extends AppCompatActivity {
     Bitmap bitmapImage;
+    Bitmap originImage;
     Bitmap preview1;
     Bitmap preview2;
     Bitmap preview3;
@@ -46,11 +47,11 @@ public class PhotoEditor extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_editor);
-
         Intent intent = getIntent();
         imageUri = Uri.parse(intent.getStringExtra("imageUri"));
         croppedView = (CropperView) findViewById(R.id.showImage);
         bitmapImage = uriToBitMap(imageUri);
+        originImage = bitmapImage;
         finalImage = bitmapImage;
         preview1 = origin(bitmapImage);
         preview2 = warm(bitmapImage);
@@ -110,7 +111,8 @@ public class PhotoEditor extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finalImage =  origin(finalImage);
+                finalImage =  originImage;
+                bitmapImage = originImage;
                 brightnessSeekbar.setProgress(0);
                 contrastBar.setProgress(100);
                 croppedView.setImageBitmap(finalImage);
@@ -206,11 +208,10 @@ public class PhotoEditor extends AppCompatActivity {
         intent.setData(uri);
         this.sendBroadcast(intent);
         uri = SendData.getImageContentUri(this, edittedFile);
-        System.out.println("transferred uri  "+uri);
         return uri;
     }
 
-    public static Bitmap origin (Bitmap Original){
+    public Bitmap origin (Bitmap Original){
         Bitmap finalImage = Bitmap.createBitmap(Original.getWidth(), Original.getHeight(), Original.getConfig());
         int A,R,G,B;
         int pixelColor;
@@ -227,10 +228,10 @@ public class PhotoEditor extends AppCompatActivity {
                 finalImage.setPixel(x,y,Color.argb(A,R,G,B));
             }
         }
+        bitmapImage =  finalImage;
         return  finalImage;
     }
-    public static Bitmap warm(Bitmap Original){
-        Log.v("invert","called");
+    public Bitmap warm(Bitmap Original){
         Bitmap finalImage = Bitmap.createBitmap(Original.getWidth(), Original.getHeight(), Original.getConfig());
 
         int A,R,G,B;
@@ -248,10 +249,11 @@ public class PhotoEditor extends AppCompatActivity {
                 finalImage.setPixel(x,y,Color.argb(A,R,G,B));
             }
         }
+        bitmapImage =  finalImage;
         return  finalImage;
     }
 
-    public static Bitmap blackAndWhite(Bitmap Original){
+    public Bitmap blackAndWhite(Bitmap Original){
         Log.v("invert","called");
         Bitmap finalImage = Bitmap.createBitmap(Original.getWidth(), Original.getHeight(), Original.getConfig());
         int A,R,G,B;
@@ -270,10 +272,11 @@ public class PhotoEditor extends AppCompatActivity {
                 finalImage.setPixel(x,y,Color.argb(A,intesity,intesity,intesity));
             }
         }
+        bitmapImage =  finalImage;
         return  finalImage;
     }
 
-    public static Bitmap invertColor(Bitmap Original){
+    public Bitmap invertColor(Bitmap Original){
         Log.v("invert","called");
         Bitmap finalImage = Bitmap.createBitmap(Original.getWidth(), Original.getHeight(), Original.getConfig());
         int A,R,G,B;
@@ -291,6 +294,7 @@ public class PhotoEditor extends AppCompatActivity {
                 finalImage.setPixel(x,y,Color.argb(A,R,G,B));
             }
         }
+        bitmapImage =  finalImage;
         return  finalImage;
     }
 

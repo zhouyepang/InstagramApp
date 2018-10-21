@@ -36,7 +36,6 @@ public class Profile extends AppCompatActivity {
         following = (TextView) findViewById(R.id.following);
         followers = (TextView) findViewById(R.id.followers);
         posts = (TextView) findViewById(R.id.posts);
-
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUser.getUid());
         loginedUser2 = FirebaseDatabase.getInstance().getReference().child("follower").child(currentUser.getUid());
