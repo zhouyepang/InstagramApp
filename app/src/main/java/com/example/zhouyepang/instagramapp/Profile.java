@@ -50,8 +50,9 @@ public class Profile extends AppCompatActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String downloadUrl = dataSnapshot.child("avaURL").getValue().toString();
-                if(downloadUrl != null) {
+                Object objDownloadUrl = dataSnapshot.child("avaURL").getValue();
+                if(objDownloadUrl != null) {
+                    String downloadUrl = objDownloadUrl.toString();
                     Picasso.get().load(downloadUrl).into(profileImage);
                 }
             }
