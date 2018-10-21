@@ -124,7 +124,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         @Override
         public int compare(Image m1, Image m2) {
             if (m1.timeStamp != null && m1.timeStamp != null) {
-                return m1.timeStamp.compareTo(m2.timeStamp);
+                return m2.timeStamp.compareTo(m1.timeStamp);
             }else{
                 return 0;
             }
