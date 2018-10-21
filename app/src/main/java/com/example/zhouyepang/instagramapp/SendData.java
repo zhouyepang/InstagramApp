@@ -85,7 +85,7 @@ public class SendData {
         String avaTime = getTimeStamp();
         com.example.zhouyepang.instagramapp.Image image = new com.example.zhouyepang.instagramapp.Image(key, fbUser.getUid(), downloadUrl.toString(), databaseCategory, avaTime);
         database.child("images").child(databaseCategory).child(key).setValue(image);
-        database.child("users").child(fbUser.getUid()).child("avaURL").setValue(downloadUrl);
+        database.child("usersProfile").child(fbUser.getUid()).child("avaURL").setValue(downloadUrl.toString());
     }
 
     public static Uri getImageContentUri(Context context,File imageFile) {

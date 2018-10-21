@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.content.Intent;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.Iterator;
 
@@ -26,6 +28,8 @@ public class Profile extends AppCompatActivity {
     DatabaseReference loginedUser;
     DatabaseReference loginedUser2;
     DatabaseReference postsRef;
+    private ImageView profileImage;
+    DatabaseReference avaRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +40,25 @@ public class Profile extends AppCompatActivity {
         following = (TextView) findViewById(R.id.following);
         followers = (TextView) findViewById(R.id.followers);
         posts = (TextView) findViewById(R.id.posts);
+        profileImage = (ImageView) findViewById(R.id.imageView3);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUser.getUid());
         loginedUser2 = FirebaseDatabase.getInstance().getReference().child("follower").child(currentUser.getUid());
+        avaRef = FirebaseDatabase.getInstance().getReference().child("usersProfile").child(currentUser.getUid()).child("avaURL");
         postsRef = FirebaseDatabase.getInstance().getReference().child("posts");
+
+        avaRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String downloadUrl = dataSnapshot.getValue().toString();
+                Picasso.get().load(downloadUrl).into(profileImage);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         loginedUser.addValueEventListener(new ValueEventListener() {
             @Override
