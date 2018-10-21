@@ -74,7 +74,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             if (image.timeStamp!=null){
                 //Timestamp stamp = new Timestamp(System.currentTimeMillis());
                 System.out.println("-----------------");
-                System.out.println("image Id "+image.userId);
+                System.out.println("image Id "+image.key);
                 System.out.println("time stamp : "+image.timeStamp);
                 if (convertStringToTimestamp(image.timeStamp)!=null) {
                     String time = convertStringToTimestamp(image.timeStamp).toString();

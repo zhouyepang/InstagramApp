@@ -73,6 +73,10 @@ public class MainPage extends AppCompatActivity
         recyclerView.setAdapter(mAdapter);
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar1);
+        getSupportActionBar().setTitle("Home");
+
         // Get the latest 100 images
         Query imagesQuery = MainActivity.database.child("images").child("postImages").orderByKey().limitToFirst(100);
         imagesQuery.addChildEventListener(new ChildEventListener() {

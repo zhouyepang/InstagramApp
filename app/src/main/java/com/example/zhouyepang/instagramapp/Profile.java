@@ -99,8 +99,6 @@ public class Profile extends AppCompatActivity {
                     }
                 }
                 posts.setText("Posts:"+ i);
-
-
             }
 
             @Override
