@@ -29,7 +29,7 @@ public class Profile extends AppCompatActivity {
     DatabaseReference loginedUser2;
     DatabaseReference postsRef;
     private ImageView profileImage;
-    DatabaseReference avaRef;
+    DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +44,13 @@ public class Profile extends AppCompatActivity {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUser.getUid());
         loginedUser2 = FirebaseDatabase.getInstance().getReference().child("follower").child(currentUser.getUid());
-        avaRef = FirebaseDatabase.getInstance().getReference().child("usersProfile").child(currentUser.getUid()).child("avaURL");
+        userRef = FirebaseDatabase.getInstance().getReference().child("usersProfile").child(currentUser.getUid());
         postsRef = FirebaseDatabase.getInstance().getReference().child("posts");
 
-        avaRef.addValueEventListener(new ValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String downloadUrl = dataSnapshot.getValue().toString();
+                String downloadUrl = dataSnapshot.child("avaURL").getValue().toString();
                 if(downloadUrl != null) {
                     Picasso.get().load(downloadUrl).into(profileImage);
                 }
