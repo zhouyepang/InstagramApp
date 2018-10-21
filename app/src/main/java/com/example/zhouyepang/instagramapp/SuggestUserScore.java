@@ -1,5 +1,8 @@
 package com.example.zhouyepang.instagramapp;
 
+/**
+ * Suggestion score class for suggestion algorithm
+ */
 public class SuggestUserScore {
 
     public String userId;

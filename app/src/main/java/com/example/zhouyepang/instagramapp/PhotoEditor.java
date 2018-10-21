@@ -30,6 +30,12 @@ import java.io.IOException;
 import android.os.Environment;
 import java.util.UUID;
 
+/**
+ * Photo editor for user to edit the photo
+ * change brightness and contrast
+ * apply 3 fileters
+ * crop function
+ */
 public class PhotoEditor extends AppCompatActivity {
     Bitmap bitmapImage;
     Bitmap originImage;
@@ -178,6 +184,7 @@ public class PhotoEditor extends AppCompatActivity {
         });
     }
 
+    // save the image back to upload optiosn page
     public void saveTheImage(View v){
         Uri new_uri = saveToInternalStorage(finalImage);
         Intent uploadOptions = new Intent(this, UploadOptions.class);
@@ -211,6 +218,11 @@ public class PhotoEditor extends AppCompatActivity {
         return uri;
     }
 
+    /**
+     * effect of revert
+     * @param Original
+     * @return
+     */
     public Bitmap origin (Bitmap Original){
         Bitmap finalImage = Bitmap.createBitmap(Original.getWidth(), Original.getHeight(), Original.getConfig());
         int A,R,G,B;
@@ -231,6 +243,13 @@ public class PhotoEditor extends AppCompatActivity {
         bitmapImage =  finalImage;
         return  finalImage;
     }
+
+    /**
+     * effect of warm (sunset)
+     * @param Original
+     * @return
+     */
+
     public Bitmap warm(Bitmap Original){
         Bitmap finalImage = Bitmap.createBitmap(Original.getWidth(), Original.getHeight(), Original.getConfig());
 
@@ -253,6 +272,12 @@ public class PhotoEditor extends AppCompatActivity {
         return  finalImage;
     }
 
+
+    /**
+     * effect of grayscale(sunset)
+     * @param Original
+     * @return
+     */
     public Bitmap blackAndWhite(Bitmap Original){
         Log.v("invert","called");
         Bitmap finalImage = Bitmap.createBitmap(Original.getWidth(), Original.getHeight(), Original.getConfig());
@@ -276,6 +301,11 @@ public class PhotoEditor extends AppCompatActivity {
         return  finalImage;
     }
 
+    /**
+     * effect of invert color
+     * @param Original
+     * @return
+     */
     public Bitmap invertColor(Bitmap Original){
         Log.v("invert","called");
         Bitmap finalImage = Bitmap.createBitmap(Original.getWidth(), Original.getHeight(), Original.getConfig());
@@ -298,6 +328,13 @@ public class PhotoEditor extends AppCompatActivity {
         return  finalImage;
     }
 
+    /**
+     * change the brightnes and contrast of the given photo
+     * @param bmp
+     * @param contrast
+     * @param brightness
+     * @return
+     */
     public static Bitmap changeBitmapContrastBrightness(Bitmap bmp, float contrast, float brightness) {
         ColorMatrix cm = new ColorMatrix(new float[] {contrast, 0, 0, 0, brightness, 0, contrast, 0, 0, brightness, 0, 0, contrast, 0, brightness, 0, 0, 0, 1, 0});
         Bitmap ret = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());

@@ -18,6 +18,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import java.util.ArrayList;
 
+/**
+ * Insgram app
+ * Group 11
+ * Group Members:
+ * 1: [Zhouyu Pang, zpang2@student.unimelb.edu.au]
+ * 2: [Shujing Xiao, shujingx@student.unimelb.edu.au]
+ * 3: [Ziang Chen, ziang@student.unimelb.edu.au]
+ * 4: [Ziqi Zhang, zzhang8@student.unimelb.edu.au]
+ * This class intiails the main page activity and database
+ * for other activity to refer
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final int RC_SIGN_IN = 123;
@@ -59,40 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 AuthUI.getInstance().createSignInIntentBuilder().setTheme(R.style.FirebaseLoginTheme).build(),
                 MainActivity.RC_SIGN_IN);
     }
-
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            if (resultCode == RESULT_OK) {
-                // Successfully signed in
-
-                // get the Firebase user
-                FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                // get the FCM token
-                String token = FirebaseInstanceId.getInstance().getToken();
-
-                // save the user info in the database to users/UID/
-                // we'll use the UID as part of the path
-                User user = new User(fbUser.getUid(), fbUser.getDisplayName(), token);
-                database.child("users").child(user.uid).setValue(user);
-
-                // go to feed activity
-                Intent intent = new Intent(this, FeedActivity.class);
-                startActivity(intent);
-            } else {
-                // Sign in failed, check response for error code
-                if (response != null) {
-                    Toast.makeText(this, response.getError().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }*/
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

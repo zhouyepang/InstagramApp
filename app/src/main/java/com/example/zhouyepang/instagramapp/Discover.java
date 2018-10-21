@@ -19,7 +19,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.content.Intent;
 
-
+/**
+ * Discover class provides suggestion user algorithm to display
+ * suggestion user algorithm:
+ * find the following users of the user
+ * find the relationships between the other users by looking for those users
+ */
 public class Discover extends AppCompatActivity {
 
     DatabaseReference users;
@@ -59,6 +64,11 @@ public class Discover extends AppCompatActivity {
         calFollowings(currentUserID);
     }
 
+    /**
+     * find who already followed
+     * and find the second relationships based on those reliationships
+     * @param currUserID
+     */
     public void calFollowings(String currUserID) {
         DatabaseReference followingFollows = FirebaseDatabase.getInstance().getReference().child("following").child(currUserID).child("followTo");
         followingFollows.addChildEventListener(new ChildEventListener() {
@@ -78,6 +88,10 @@ public class Discover extends AppCompatActivity {
         });
     }
 
+    /**
+     * update the found user relationship
+     * @param follwingUserID
+     */
     public void calSuggested(String follwingUserID){
         DatabaseReference followingFollows = FirebaseDatabase.getInstance().getReference().child("following").child(follwingUserID).child("followTo");
         followingFollows.addChildEventListener(new ChildEventListener() {
@@ -96,6 +110,13 @@ public class Discover extends AppCompatActivity {
         });
     }
 
+    /**
+     * update the relationship score
+     * principles:
+     * if the user are followed by most of your friend
+     * the score for that user will be very high
+     * @param userId
+     */
     public void updateTheRelationshipsUser(String userId){
         if (!checkIfUserExist(userId)){
             SuggestUserScore us = new SuggestUserScore(userId);
@@ -150,6 +171,10 @@ public class Discover extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * enable the fixed tool bar
+     */
     public void enableToolBar(){
         View includeView = (View) findViewById(R.id.parent_Layout);
         ImageButton button1 = (ImageButton)includeView.findViewById(R.id.UserFeed);

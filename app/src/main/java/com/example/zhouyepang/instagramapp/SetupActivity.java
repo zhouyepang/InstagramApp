@@ -72,48 +72,25 @@ public class SetupActivity extends AppCompatActivity {
         currentUserID = myAuth.getCurrentUser().getUid();
         usersRef = FirebaseDatabase.getInstance().getReference().child("usersProfile").child(currentUserID);
         userRrofileImageRef = FirebaseStorage.getInstance().getReference().child("profile Images");
-
-
         displayName = myAuth.getCurrentUser().getDisplayName();
-
         userName = (EditText) findViewById(R.id.setup_username);
         fullName = (EditText) findViewById(R.id.setup_full_name);
         fullName.setText(displayName);
         countryName = (EditText) findViewById(R.id.setup_country_name);
         saveInforButton = (Button) findViewById(R.id.setup_information_button);
         profileImage = (CircleImageView) findViewById(R.id.setup_profile_image);
-
         saveInforButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveAccountSetupInfor();
             }
         });
-
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 choosePhoto();
             }
         });
-
-        /*usersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if(dataSnapshot.exists()) {
-                    String image = dataSnapshot.child("profileimage").getValue().toString();
-
-                    Picasso.get().load(image).placeholder(R.drawable.ic_account_circle_black_24dp).into(profileImage);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });  */
 
     }
 
@@ -136,63 +113,6 @@ public class SetupActivity extends AppCompatActivity {
             profileImage.setImageURI(imageUri);
         }
     }
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode==gallery_pick && requestCode==RESULT_OK && data!=null) {
-            imageUri = data.getData();
-            System.out.println("image uri "+data.getData());
-            profileImage.setImageURI(imageUri);
-
-            CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    //.setAspectRatio(1,1)
-                    .start(this);
-
-
-        }
-
-        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-
-            if(resultCode==RESULT_OK) {
-                Uri resultUri = result.getUri();
-
-                StorageReference filePath = userRrofileImageRef.child(currentUserID + ".jpg");
-                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if(task.isSuccessful()) {
-                            Toast.makeText(SetupActivity.this,"Profile Image stored to Firebase storage!", Toast.LENGTH_SHORT).show();
-
-                            final String downloadUrl = task.getResult().getDownloadUrl().toString();
-                            usersRef.child("profileimage").setValue(downloadUrl)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()) {
-                                                Intent selfIntent = new Intent(SetupActivity.this, SetupActivity.class);
-                                                startActivity(selfIntent);
-                                                Toast.makeText(SetupActivity.this, "Profile Image stored to Firebase database!", Toast.LENGTH_SHORT).show();
-                                            }
-                                            else {
-                                                String message = task.getException().getMessage();
-                                                Toast.makeText(SetupActivity.this, "Error occurred: "+message, Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                });
-
-            } else {
-                Toast.makeText(this, "Error occurred: image cannot be cropped.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-*/
     private void saveAccountSetupInfor() {
 
         String username = userName.getText().toString();
@@ -225,19 +145,6 @@ public class SetupActivity extends AppCompatActivity {
                             .setDisplayName(fullName.getText().toString()).build();
                     currentUser.updateProfile(profileUpdates);
                 }
-
-               /* myAuth.addAuthStateListener (new FirebaseAuth.AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if(user!=null){
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(fullName.getText().toString()).build();
-                            user.updateProfile(profileUpdates);
-
-                        }
-                    }
-                }); */
                 sendUserToProfilePage();
                 Toast.makeText(this,"Your profile is updated successfully!",Toast.LENGTH_SHORT).show();
 
@@ -248,14 +155,6 @@ public class SetupActivity extends AppCompatActivity {
                 Log.d("Error","Fail to update profile");
 
             }
-
-            //updateInfo(fullname, username, country)
-
-            //usersRef.child("displayName").setValue(fullname);
-            //usersRef.child("username").setValue(username);
-            //usersRef.child("country").setValue(country);
-
-            //Toast.makeText(this,"Your profile is updated successfully!",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -270,14 +169,6 @@ public class SetupActivity extends AppCompatActivity {
         usersRef.child("displayName").setValue(a);
         usersRef.child("username").setValue(b);
         usersRef.child("country").setValue(c);
-
-        /*StorageReference filePath = userRrofileImageRef.child(currentUserID + ".jpg");
-        filePath.putFile(imageUri);
-
-        if (imageUri != null) {
-            usersRef.child("profileimage").setValue(imageUri);
-        } */
-
         FirebaseDatabase.getInstance().getReference().child("users").child(currentUserID).child("displayName").setValue(a);
         uploadAva();
     }

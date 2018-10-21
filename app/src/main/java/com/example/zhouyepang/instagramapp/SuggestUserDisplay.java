@@ -16,6 +16,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.*;
 
 
+/**
+ * suggestion user display adapter for RecyclerView.Adapter
+ */
+
 public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.ViewHolder>  {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,39 +63,10 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
             final String currID = ids.get(position);
             String currentUserName =  MainActivity.lookUpUserID.lookUpUserNamebyId(currID);
             TextView usernameView = viewHolder.userNameText;
-            System.out.println(currentUserName);
             usernameView.setText(currentUserName);
             final Button addButton = viewHolder.addFriend;
 
             loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUser.getUid());
-
-            /*loginedUser.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    if(dataSnapshot.exists()) {
-
-                        if(dataSnapshot.child("followTo").hasChild(currID)) {
-                            addButton.setVisibility(View.VISIBLE);
-                            addButton.setText("ADDED");
-                        } else if (currID.equals(currentUser.getUid().toString())) {
-                            addButton.setVisibility(View.INVISIBLE);
-                        } else {
-
-                            addButton.setVisibility(View.VISIBLE);
-                            addButton.setText("ADD");
-                        }
-
-
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            }); */
 
             if(currID.equals(currentUser.getUid().toString())){
                 addButton.setVisibility(View.INVISIBLE);
@@ -103,15 +78,9 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
             } else {
                 addButton.setVisibility(View.VISIBLE);
             }
-
-                // 可能造成运行速度变慢的原因
+                // possible reason for system lagging
                 loginedUser.addChildEventListener(new ChildEventListener() {
-
-
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-
-
                         if (dataSnapshot.hasChild(currID)) {
 
                             //addButton.setText("ADDED");
@@ -152,27 +121,10 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
                 });
 
 
-            /*if(currID == currentUser.getUid()) {
-                addButton.setText("ME");
-            } else if(dataSnapshot.child("followTo").getKey() == currID) {
-
-                addButton.setText("ADDED");
-
-            } else {
-                addButton.setText("ADD");
-            } */
-            //addButton.setText("ADD");
-
             viewHolder.addFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     followAuser(currentUser.getUid(),currID);
-                    //following = FirebaseDatabase.getInstance().getReference().child("following").child(currentUser.getUid());
-                    //following.setValue(currID);
-
-                    //Toast.makeText(mContext, userInfo.get(position), Toast.LENGTH_SHORT).show();
-                    //Intent intent = new Intent(mContext, Profile.class);
-                    //mContext.startActivity(intent);
                     addButton.setText("FOLLOWED");
                 }
             });
@@ -187,9 +139,6 @@ public class SuggestUserDisplay extends RecyclerView.Adapter<SuggestUserDisplay.
             following2.child("whoFollowsMe").child(uid).setValue(uid);
 
         }
-
-
-
         public int getItemCount() {
             return ids.size();
         }

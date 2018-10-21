@@ -39,9 +39,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FeedActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".MainPage"
             android:label="@string/title_activity_main_page"
             android:theme="@style/AppTheme.NoActionBar" />

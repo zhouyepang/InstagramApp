@@ -20,7 +20,9 @@ import org.w3c.dom.Text;
 import java.lang.reflect.Array;
 import java.util.*;
 
-
+/**
+ * comment display adapter for RecyclerView.Adapter
+ */
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder>  {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,6 +62,4 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public int getItemCount() {
         return commentContent.size();
     }
-
-
 }

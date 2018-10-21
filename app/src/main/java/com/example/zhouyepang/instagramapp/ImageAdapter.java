@@ -18,6 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Image adpater inflates the recyclerView
+ */
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
     private ArrayList<Image> mDataset;
     private MainPage mActivity;
@@ -59,8 +62,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             SimpleDateFormat sf = new SimpleDateFormat( "yyyy-mm-dd HH:mm:ss");
             Date dateFormat = new Date(Long.parseLong(date));
             String convertedDate = sf.format(dateFormat).toString();
-            System.out.println("date:  "+sf.format(dateFormat));
-            System.out.println("converted date :  "+convertedDate);
             return convertedDate;
 
     }
