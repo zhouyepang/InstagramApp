@@ -55,7 +55,7 @@ public class MainPage extends AppCompatActivity
         currStamp = new Timestamp(System.currentTimeMillis());
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("Home");
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -72,10 +72,6 @@ public class MainPage extends AppCompatActivity
         mAdapter = new ImageAdapter(images, this);
         recyclerView.setAdapter(mAdapter);
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar1);
-        getSupportActionBar().setTitle("Home");
 
         // Get the latest 100 images
         Query imagesQuery = MainActivity.database.child("images").child("postImages").orderByKey().limitToFirst(100);
