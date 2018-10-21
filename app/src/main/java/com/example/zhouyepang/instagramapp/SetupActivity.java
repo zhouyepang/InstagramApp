@@ -36,6 +36,10 @@ public class SetupActivity extends AppCompatActivity {
     private EditText userName, fullName, countryName;
     private Button saveInforButton;
     private CircleImageView profileImage;
+    FirebaseUser fbUser;
+    DatabaseReference database;
+
+    static final int RC_IMAGE_GALLERY = 2;
 
     private FirebaseAuth myAuth;
     private DatabaseReference usersRef;
@@ -55,6 +59,13 @@ public class SetupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+
+        fbUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (fbUser == null) {
+            finish();
+        }
+
+        database = FirebaseDatabase.getInstance().getReference();
 
         myAuth = FirebaseAuth.getInstance();
         currentUser = myAuth.getCurrentUser();
@@ -82,10 +93,7 @@ public class SetupActivity extends AppCompatActivity {
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent galleryIntent = new Intent();
-                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-                galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent, gallery_pick);
+                choosePhoto();
             }
         });
 
@@ -109,6 +117,26 @@ public class SetupActivity extends AppCompatActivity {
 
     }
 
+    private void uploadAva() {
+        com.example.zhouyepang.instagramapp.SendData.uploadImage(SetupActivity.this, fbUser, imageUri, database, "avatars", false, "");
+    }
+
+    private void choosePhoto(){
+        Intent galleryIntent = new Intent();
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        startActivityForResult(galleryIntent, RC_IMAGE_GALLERY);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RC_IMAGE_GALLERY && resultCode == RESULT_OK && data != null) {
+            imageUri = data.getData();
+            profileImage.setImageURI(imageUri);
+        }
+    }
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -167,7 +195,7 @@ public class SetupActivity extends AppCompatActivity {
             }
         }
     }
-
+*/
     private void saveAccountSetupInfor() {
 
         String username = userName.getText().toString();
@@ -256,5 +284,6 @@ public class SetupActivity extends AppCompatActivity {
         } */
 
         FirebaseDatabase.getInstance().getReference().child("users").child(currentUserID).child("displayName").setValue(a);
+        uploadAva();
     }
 }
