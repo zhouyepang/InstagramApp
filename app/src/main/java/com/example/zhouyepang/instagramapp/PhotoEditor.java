@@ -73,7 +73,7 @@ public class PhotoEditor extends AppCompatActivity {
         brightnessSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                finalImage = changeBitmapContrastBrightness(bitmapImage,
+                finalImage = changeBitmapContrastBrightness(finalImage,
                         1, (float) progress / 1f);
                 croppedView.setImageBitmap(finalImage);
                 // textView.setText("Contrast: "+(float) progress / 100f);
@@ -110,7 +110,7 @@ public class PhotoEditor extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finalImage =  origin(finalImage);
+                finalImage =  preview1;
                 brightnessSeekbar.setProgress(0);
                 contrastBar.setProgress(100);
                 croppedView.setImageBitmap(finalImage);
@@ -230,7 +230,6 @@ public class PhotoEditor extends AppCompatActivity {
         return  finalImage;
     }
     public static Bitmap warm(Bitmap Original){
-        Log.v("invert","called");
         Bitmap finalImage = Bitmap.createBitmap(Original.getWidth(), Original.getHeight(), Original.getConfig());
 
         int A,R,G,B;

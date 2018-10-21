@@ -115,7 +115,7 @@ public class SetupActivity extends AppCompatActivity {
 
         if(requestCode==gallery_pick && requestCode==RESULT_OK && data!=null) {
             imageUri = data.getData();
-
+            System.out.println("image uri "+data.getData());
             profileImage.setImageURI(imageUri);
 
             CropImage.activity()
@@ -147,14 +147,11 @@ public class SetupActivity extends AppCompatActivity {
                                             if(task.isSuccessful()) {
                                                 Intent selfIntent = new Intent(SetupActivity.this, SetupActivity.class);
                                                 startActivity(selfIntent);
-
                                                 Toast.makeText(SetupActivity.this, "Profile Image stored to Firebase database!", Toast.LENGTH_SHORT).show();
                                             }
                                             else {
-
                                                 String message = task.getException().getMessage();
                                                 Toast.makeText(SetupActivity.this, "Error occurred: "+message, Toast.LENGTH_SHORT).show();
-
                                             }
                                         }
                                     });
@@ -231,8 +228,6 @@ public class SetupActivity extends AppCompatActivity {
             //usersRef.child("country").setValue(country);
 
             //Toast.makeText(this,"Your profile is updated successfully!",Toast.LENGTH_SHORT).show();
-
-
         }
     }
 

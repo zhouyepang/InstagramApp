@@ -12,8 +12,8 @@
 
     <TextView
         android:id="@+id/posts"
-        android:layout_width="92dp"
-        android:layout_height="27dp"
+        android:layout_width="68dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/following"
         android:layout_marginEnd="13dp"
