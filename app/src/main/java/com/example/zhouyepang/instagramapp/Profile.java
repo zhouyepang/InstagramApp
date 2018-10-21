@@ -51,7 +51,9 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String downloadUrl = dataSnapshot.getValue().toString();
-                Picasso.get().load(downloadUrl).into(profileImage);
+                if(downloadUrl != null) {
+                    Picasso.get().load(downloadUrl).into(profileImage);
+                }
             }
 
             @Override
