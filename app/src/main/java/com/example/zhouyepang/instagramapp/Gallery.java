@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import static android.app.Activity.RESULT_OK;
 
 public class Gallery extends Fragment {
+    //initial element
     private Button btnSelect, btnNext;
     private ImageView photoPreview;
     private static final int CROP_PHOTO = 2;
@@ -29,6 +30,7 @@ public class Gallery extends Fragment {
     static final int RC_IMAGE_GALLERY = 2;
     Uri imageUri;
     Context applicationContext;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -48,7 +50,7 @@ public class Gallery extends Fragment {
                 openGallery(view);
             }
         });
-
+        //click button event
         btnNext.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

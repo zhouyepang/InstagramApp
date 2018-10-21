@@ -168,8 +168,10 @@ public class TakePhoto  extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    flashOption = 1;
                     setOpenFlash();
                 } else {
+                    flashOption = 0;
                     setCloseFlash();
                 }
             }
@@ -244,6 +246,8 @@ public class TakePhoto  extends Fragment {
 
                 btnConfirm.setEnabled(true);
                 btnCancel.setEnabled(true);
+
+
             }
         }, mainHandler);
 
@@ -292,7 +296,7 @@ public class TakePhoto  extends Fragment {
                     cameraCaptureSessions = cameraCaptureSession;
                     try {
                         previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-                        previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+                        previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_OFF);
                         previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
                         CaptureRequest previewRequest = previewRequestBuilder.build();
                         cameraCaptureSessions.setRepeatingRequest(previewRequest, null, childHandler);
@@ -331,11 +335,11 @@ public class TakePhoto  extends Fragment {
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureRequestBuilder.addTarget(imageReader.getSurface());
             captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
             int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
             captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
             CaptureRequest mCaptureRequest = captureRequestBuilder.build();
             cameraCaptureSessions.capture(mCaptureRequest, null, childHandler);
+            swiFlash.setChecked(false);
             cameraCaptureSessions.stopRepeating();
         } catch (CameraAccessException e) {
             e.printStackTrace();
