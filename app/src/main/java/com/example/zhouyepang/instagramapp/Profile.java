@@ -45,7 +45,7 @@ public class Profile extends AppCompatActivity {
         loginedUser = FirebaseDatabase.getInstance().getReference().child("following").child(currentUser.getUid());
         loginedUser2 = FirebaseDatabase.getInstance().getReference().child("follower").child(currentUser.getUid());
         userRef = FirebaseDatabase.getInstance().getReference().child("usersProfile").child(currentUser.getUid());
-        postsRef = FirebaseDatabase.getInstance().getReference().child("posts");
+        postsRef = FirebaseDatabase.getInstance().getReference().child("images").child("postImages");
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
