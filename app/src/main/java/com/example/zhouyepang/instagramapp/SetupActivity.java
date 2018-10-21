@@ -1,12 +1,8 @@
 package com.example.zhouyepang.instagramapp;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -42,9 +38,8 @@ public class SetupActivity extends AppCompatActivity {
     private CircleImageView profileImage;
     FirebaseUser fbUser;
     DatabaseReference database;
-    static final int RC_PERMISSION_READ_EXTERNAL_STORAGE = 1;
-    static final int RC_IMAGE_GALLERY = 2;
 
+    static final int RC_IMAGE_GALLERY = 2;
 
     private FirebaseAuth myAuth;
     private DatabaseReference usersRef;
@@ -90,15 +85,10 @@ public class SetupActivity extends AppCompatActivity {
                 saveAccountSetupInfor();
             }
         });
-<<<<<<< HEAD
-
-        //select photo by gallery
-=======
->>>>>>> 51e6641125a2f10b41e47a0e6ea8a6862b4ea2e4
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openGallery(view);
+                choosePhoto();
             }
         });
 
@@ -108,7 +98,6 @@ public class SetupActivity extends AppCompatActivity {
         com.example.zhouyepang.instagramapp.SendData.uploadImage(SetupActivity.this, fbUser, imageUri, database, "avatars", false, "");
     }
 
-    //intent to system gallery to choose photo
     private void choosePhoto(){
         Intent galleryIntent = new Intent();
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
@@ -124,85 +113,6 @@ public class SetupActivity extends AppCompatActivity {
             profileImage.setImageURI(imageUri);
         }
     }
-<<<<<<< HEAD
-
-    // method for this fragment to request and get permission for opening gallery from user
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == RC_PERMISSION_READ_EXTERNAL_STORAGE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                choosePhoto();
-            }
-        }
-    }
-
-    //open gallery method with check and request permission
-    public void openGallery(View view) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, RC_PERMISSION_READ_EXTERNAL_STORAGE);
-        } else {
-            choosePhoto();
-        }
-    }
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode==gallery_pick && requestCode==RESULT_OK && data!=null) {
-            imageUri = data.getData();
-            System.out.println("image uri "+data.getData());
-            profileImage.setImageURI(imageUri);
-
-            CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    //.setAspectRatio(1,1)
-                    .start(this);
-
-
-        }
-
-        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-
-            if(resultCode==RESULT_OK) {
-                Uri resultUri = result.getUri();
-
-                StorageReference filePath = userRrofileImageRef.child(currentUserID + ".jpg");
-                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if(task.isSuccessful()) {
-                            Toast.makeText(SetupActivity.this,"Profile Image stored to Firebase storage!", Toast.LENGTH_SHORT).show();
-
-                            final String downloadUrl = task.getResult().getDownloadUrl().toString();
-                            usersRef.child("profileimage").setValue(downloadUrl)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()) {
-                                                Intent selfIntent = new Intent(SetupActivity.this, SetupActivity.class);
-                                                startActivity(selfIntent);
-                                                Toast.makeText(SetupActivity.this, "Profile Image stored to Firebase database!", Toast.LENGTH_SHORT).show();
-                                            }
-                                            else {
-                                                String message = task.getException().getMessage();
-                                                Toast.makeText(SetupActivity.this, "Error occurred: "+message, Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                });
-
-            } else {
-                Toast.makeText(this, "Error occurred: image cannot be cropped.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-*/
-=======
->>>>>>> 51e6641125a2f10b41e47a0e6ea8a6862b4ea2e4
     private void saveAccountSetupInfor() {
 
         String username = userName.getText().toString();
